@@ -22,7 +22,12 @@ int main( void )
 
 	Matrix c = w1 * w2;
 
-	std::cout << c << std::endl;
+	std::cout << "regular: \n" << w2 << std::endl;
+
+	std::cout << std::endl;
+	Matrix d = w2.transpose();
+
+	std::cout << "transposed: \n" << d << std::endl;
 
     return (0);
 }

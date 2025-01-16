@@ -43,7 +43,7 @@ Matrix	&Matrix::operator=( const Matrix &og ) {
 	return *this;
 }
 
-Matrix	Matrix::operator+( const Matrix &m1 ) {
+Matrix	Matrix::operator+( const Matrix &m1 ) const {
 	if (m1.rows() != this->rows() || m1.columns() != this->columns())
 		throw std::invalid_argument("different sizes");
 	Matrix result(m1);
@@ -55,7 +55,7 @@ Matrix	Matrix::operator+( const Matrix &m1 ) {
 	return (result);
 }
 
-Matrix	Matrix::operator*( const Matrix &mult ) {
+Matrix	Matrix::operator*( const Matrix &mult ) const {
 	if (mult.rows() != this->columns() || mult.columns() != this->rows())
 		throw std::invalid_argument("matrices not aligned");
 	Matrix result(this->rows(), mult.columns());
@@ -67,6 +67,16 @@ Matrix	Matrix::operator*( const Matrix &mult ) {
 		}
 	}
 	return (result);
+}
+
+Matrix	Matrix::transpose( void ) const {
+	Matrix	T(this->columns(), this->rows());
+	for (int i = 0; i < this->rows(); i++) {
+		for (int j = 0; j < this->columns(); j++) {
+			T.m[j][i] = this->m[i][j];
+		}
+	}
+	return (T);
 }
 
 std::ostream& operator<<(std::ostream& os, const Matrix& matrix) {
