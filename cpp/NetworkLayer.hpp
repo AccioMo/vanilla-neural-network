@@ -3,23 +3,31 @@
 # define NETWORKLAYER_HPP
 
 # include <iostream>
+# include "Matrix.hpp"
 
 class NetworkLayer {
 	private:
-		int		neurons;
+		const int	_neurons;
 
-		double  **weights;
-		double  *biases;
+		/* these weights and biases should 
+		connect this layer with the next one */
+		Matrix		_weights;
+		Matrix		_biases;
 
-		double	*outputs;
-		double	*errors;
-		double	*deltas;
+		Matrix		_outputs;
+		Matrix		_errors;
+		Matrix		_deltas;
 
 	public:
-		double  getWeights( void ) const;
-		void    setWeights( double new_weights );
-		double  getBiases( void ) const;
-		void    setBiases( double new_biases );
+		NetworkLayer( int input_size, int output_size );
+		NetworkLayer( const NetworkLayer &og );
+		NetworkLayer	&operator=( const NetworkLayer &og );
+		~NetworkLayer();
+
+		Matrix  getWeights( void ) const;
+		void    setWeights( Matrix new_weights );
+		Matrix  getBiases( void ) const;
+		void    setBiases( Matrix new_biases );
 };
 
 #endif
