@@ -4,6 +4,8 @@
 #include "Matrix.hpp"
 #include <vector>
 
+#define NETWORK_SIZE 3
+
 int main( void )
 {
 	Matrix	inputs((std::vector<std::vector<double>>){{0, 1},
@@ -19,13 +21,14 @@ int main( void )
 	NetworkLayer	hidden_layer(0, 2, 4);
 	NetworkLayer	output_layer(1, 4, 1);
 
-	std::cout << hidden_layer.getWeights() << std::endl;
-	std::cout << output_layer.getWeights() << std::endl;
+	// std::cout << hidden_layer.getWeights() << std::endl;
+	// std::cout << output_layer.getWeights() << std::endl;
 
-	int	nodes[3] = {2, 4, 1};
-	NeuralNetwork	network(2, (int *)nodes, 0.5);
+	int	nodes[NETWORK_SIZE] = {2, 4, 1};
+	NeuralNetwork	network(NETWORK_SIZE, (int *)nodes, 0.5);
 
-	std::cout << network.layers[0] << std::endl;
+	for (int i = 0; i < NETWORK_SIZE - 1; i++)
+		std::cout << network.layers[i] << std::endl;
 
     return (0);
 }

@@ -4,9 +4,9 @@
 NeuralNetwork::NeuralNetwork( int size, int *nodes, double learning_rate )
 	: _size(size),
 	_learning_rate(learning_rate) {
-	this->layers.reserve(size);
-	for (int i = 0; i < size; i++) {
-		this->layers.emplace_back(NetworkLayer(i, nodes[i], nodes[i + 1]));
+	this->layers.reserve(size - 1);
+	for (int i = 0; i < size - 1; i++) {
+		this->layers.emplace_back(NetworkLayer(i, nodes[i + 1], nodes[i]));
 	}
 }
 
