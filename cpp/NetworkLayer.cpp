@@ -1,25 +1,31 @@
 
 #include "NetworkLayer.hpp"
 
-NetworkLayer::NetworkLayer( int input_size, int output_size ) {
-	_neurons = input_size;
-	_weights = Matrix(output_size, input_size);
-	_biases = Matrix(output_size, 1);
-}
+NetworkLayer::NetworkLayer( int input_size, int output_size )
+	: _neurons(input_size),
+	_weights(Matrix(output_size, input_size, M_RAND)),
+	_biases(Matrix(output_size, 1, M_RAND)),
 
-NetworkLayer::NetworkLayer( const NetworkLayer &og ) {
-	this->_neurons = og._neurons;
-	this->_weights = og._weights;
-	this->_biases = og._biases;
-	this->_outputs = og._outputs;
-	this->_errors = og._errors;
-	this->_deltas = og._deltas;
-}
+	_outputs(Matrix(output_size, input_size)),
+	_errors(Matrix(output_size, input_size)),
+	_deltas(Matrix(output_size, input_size))
+{ }
+
+NetworkLayer::NetworkLayer( const NetworkLayer &og )
+	: _neurons(og._neurons),
+	_weights(og._weights),
+	_biases(og._biases),
+	
+	_outputs(og._outputs),
+	_errors(og._errors),
+	_deltas(og._deltas)
+{ }
 
 NetworkLayer	&NetworkLayer::operator=( const NetworkLayer &og ) {
 	this->_neurons = og._neurons;
 	this->_weights = og._weights;
 	this->_biases = og._biases;
+	
 	this->_outputs = og._outputs;
 	this->_errors = og._errors;
 	this->_deltas = og._deltas;

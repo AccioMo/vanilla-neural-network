@@ -1,33 +1,26 @@
 
 // #include "NeuralNetwork.hpp"
-// #include "NetworkLayer.hpp"
+#include "NetworkLayer.hpp"
 #include "Matrix.hpp"
 #include <vector>
 
 int main( void )
 {
-	std::vector<std::vector<double>>	a{{1, 2, 3, 5},
-										  {4, 5, 6, 7},
-										  {7, 8, 9, 10}};
+	Matrix	inputs((std::vector<std::vector<double>>){{0, 1},
+													 {1, 0},
+													 {0, 0},
+													 {1, 1}});
 
-	std::vector<std::vector<double>>	b{{1, 2, 3},
-										  {4, 5, 6},
-										  {7, 8, 9},
-										  {10, 11, 12}};
+	Matrix	outputs((std::vector<std::vector<double>>){{1},
+													   {1},
+													   {0},
+													   {0}});
 
-	Matrix w1(a);
-	Matrix w2(b);
+	NetworkLayer	hidden_layer(2, 4);
+	NetworkLayer	output_layer(4, 1);
 
-	std::cout << "rows: " << w1.rows() << "; columns: " << w1.columns() << std::endl;
-
-	Matrix c = w1 * w2;
-
-	std::cout << "regular: \n" << w2 << std::endl;
-
-	std::cout << std::endl;
-	Matrix d = w2.transpose();
-
-	std::cout << "transposed: \n" << d << std::endl;
+	std::cout << hidden_layer.getWeights() << std::endl;
+	std::cout << output_layer.getWeights() << std::endl;
 
     return (0);
 }

@@ -3,7 +3,13 @@
 # define MATRIX_HPP
 
 # include <iostream>
-#include <vector>
+# include <vector>
+# include <random>
+
+typedef enum e_starting_value {
+	M_ZEROS,
+	M_RAND
+}	t_starting_value;
 
 class Matrix {
 	private:
@@ -15,6 +21,7 @@ class Matrix {
 
 		Matrix( std::vector<std::vector<double>> array );
 		Matrix( int rows, int columns );
+		Matrix( int rows, int columns, t_starting_value starting_value );
 		Matrix	&operator=( const Matrix &og );
 		Matrix( const Matrix &og );
 		~Matrix();
@@ -23,6 +30,7 @@ class Matrix {
 		int	columns( void ) const;
 
 		Matrix	operator+( const Matrix &m2 ) const;
+		Matrix	operator-( const Matrix &m2 ) const;
 		Matrix	operator*( const Matrix &og ) const;
 
 		Matrix	transpose( void ) const;

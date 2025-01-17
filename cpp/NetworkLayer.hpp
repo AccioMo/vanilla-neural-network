@@ -7,7 +7,7 @@
 
 class NetworkLayer {
 	private:
-		const int	_neurons;
+		int	_neurons;
 
 		/* these weights and biases should 
 		connect this layer with the next one */

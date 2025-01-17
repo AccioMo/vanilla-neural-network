@@ -18,6 +18,22 @@ Matrix::Matrix( int rows, int columns ) {
 	this->m = std::vector<std::vector<double>>(rows, std::vector<double>(columns));
 }
 
+Matrix::Matrix( int rows, int columns, t_starting_value starting_value ) {
+	this->_rows = rows;
+	this->_columns = columns;
+	this->m = std::vector<std::vector<double>>(rows, std::vector<double>(columns));
+	if (starting_value == M_RAND) {
+		std::random_device					rd;
+		std::mt19937						gen(rd());
+		std::uniform_real_distribution<>	dis(-3.0, 3.0);
+		for ( auto &row : this->m ) {
+			for (auto &value : row) {
+				value = dis(gen);
+			}
+		}
+	}
+}
+
 Matrix::Matrix( const Matrix &og ) {
 	this->_rows = og._rows;
 	this->_columns = og._columns;
@@ -50,6 +66,18 @@ Matrix	Matrix::operator+( const Matrix &m1 ) const {
 	for (int i = 0; i < m1.rows(); i++) {
 		for (int j = 0; j < m1.columns(); j++) {
 			result.m[i][j] += m1.m[i][j];
+		}
+	}
+	return (result);
+}
+
+Matrix	Matrix::operator-( const Matrix &m1 ) const {
+	if (m1.rows() != this->rows() || m1.columns() != this->columns())
+		throw std::invalid_argument("different sizes");
+	Matrix result(m1);
+	for (int i = 0; i < m1.rows(); i++) {
+		for (int j = 0; j < m1.columns(); j++) {
+			result.m[i][j] -= m1.m[i][j];
 		}
 	}
 	return (result);
