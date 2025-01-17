@@ -1,5 +1,5 @@
 
-// #include "NeuralNetwork.hpp"
+#include "NeuralNetwork.hpp"
 #include "NetworkLayer.hpp"
 #include "Matrix.hpp"
 #include <vector>
@@ -16,11 +16,16 @@ int main( void )
 													   {0},
 													   {0}});
 
-	NetworkLayer	hidden_layer(2, 4);
-	NetworkLayer	output_layer(4, 1);
+	NetworkLayer	hidden_layer(0, 2, 4);
+	NetworkLayer	output_layer(1, 4, 1);
 
 	std::cout << hidden_layer.getWeights() << std::endl;
 	std::cout << output_layer.getWeights() << std::endl;
+
+	int	nodes[3] = {2, 4, 1};
+	NeuralNetwork	network(2, (int *)nodes, 0.5);
+
+	std::cout << network.layers[0] << std::endl;
 
     return (0);
 }

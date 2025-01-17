@@ -7,7 +7,8 @@
 
 class NetworkLayer {
 	private:
-		int	_neurons;
+		const int	_index;
+		int			_neurons;
 
 		/* these weights and biases should 
 		connect this layer with the next one */
@@ -19,7 +20,7 @@ class NetworkLayer {
 		Matrix		_deltas;
 
 	public:
-		NetworkLayer( int input_size, int output_size );
+		NetworkLayer( int index, int input_size, int output_size );
 		NetworkLayer( const NetworkLayer &og );
 		NetworkLayer	&operator=( const NetworkLayer &og );
 		~NetworkLayer();
@@ -28,6 +29,9 @@ class NetworkLayer {
 		void    setWeights( Matrix new_weights );
 		Matrix  getBiases( void ) const;
 		void    setBiases( Matrix new_biases );
+		int		getIndex( void ) const;
 };
+
+std::ostream	&operator<<( std::ostream &os, NetworkLayer &nl );
 
 #endif
