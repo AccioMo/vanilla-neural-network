@@ -3,6 +3,7 @@
 # define NEURALNETWORK_HPP
 
 # include <iostream>
+
 # include "NetworkLayer.hpp"
 
 class NeuralNetwork {
@@ -20,9 +21,9 @@ class NeuralNetwork {
 		NeuralNetwork	&operator=( const NeuralNetwork &og );
 		~NeuralNetwork( );
 
-		double	feedforward( void ) const;
-		double	backpropagation( double outputs ) const;
-		void	training( double *errors, double *deltas );
+		void	feedforward( const Matrix &inputs );
+		void	backpropagation( void );
+		void	training( void );
 };
 
 #endif

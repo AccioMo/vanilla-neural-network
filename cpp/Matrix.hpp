@@ -19,6 +19,7 @@ class Matrix {
 	public:
 		std::vector<std::vector<double>>	m;
 
+		Matrix( void );
 		Matrix( std::vector<std::vector<double>> array );
 		Matrix( int rows, int columns );
 		Matrix( int rows, int columns, t_starting_value starting_value );
@@ -34,6 +35,8 @@ class Matrix {
 		Matrix	operator*( const Matrix &og ) const;
 
 		Matrix	transpose( void ) const;
+		Matrix	repeat_columns( int columns ) const;
+		Matrix	repeat_rows( int rows ) const;
 };
 
 std::ostream& operator<<(std::ostream& os, const Matrix& matrix);

@@ -4,7 +4,7 @@
 NetworkLayer::NetworkLayer( int index, int input_size, int output_size )
 	: _index(index),
 	_neurons(input_size),
-	_weights(Matrix(output_size, input_size, M_RAND)),
+	_weights(Matrix(input_size, output_size, M_RAND)),
 	_biases(Matrix(output_size, 1, M_RAND)),
 
 	_outputs(Matrix(output_size, input_size)),
@@ -40,7 +40,15 @@ Matrix  NetworkLayer::getWeights( void ) const {
     return (this->_weights);
 }
 
-void    NetworkLayer::setWeights( Matrix new_weights ) {
+
+Matrix	&NetworkLayer::feedforward( const Matrix &inputs ) {
+	this->_outputs = (inputs * this->_weights) + this->_biases;
+	this->_outputs = ReLU(this->_outputs);
+	return (this->_outputs);
+}
+
+
+void    NetworkLayer::setWeights( const Matrix &new_weights ) {
 	this->_weights = new_weights;
 }
 
@@ -48,8 +56,32 @@ Matrix  NetworkLayer::getBiases( void ) const {
     return (this->_biases);
 }
 
-void    NetworkLayer::setBiases( Matrix new_biases ) {
+void    NetworkLayer::setBiases( Matrix &new_biases ) {
 	this->_biases = new_biases;
+}
+
+Matrix  NetworkLayer::getOutputs( void ) const {
+    return (this->_outputs);
+}
+
+void    NetworkLayer::setOutputs( Matrix &new_outputs ) {
+	this->_outputs = new_outputs;
+}
+
+Matrix  NetworkLayer::getErrors( void ) const {
+    return (this->_errors);
+}
+
+void    NetworkLayer::setErrors( Matrix &new_errors ) {
+	this->_errors = new_errors;
+}
+
+Matrix  NetworkLayer::getDeltas( void ) const {
+    return (this->_deltas);
+}
+
+void    NetworkLayer::setDeltas( Matrix &new_deltas ) {
+	this->_deltas = new_deltas;
 }
 
 int  NetworkLayer::getIndex( void ) const {

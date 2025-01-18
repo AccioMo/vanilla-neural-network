@@ -1,6 +1,11 @@
 
 #include "Matrix.hpp"
 
+Matrix::Matrix( void )
+	: _rows(0),
+	_columns(0)
+{ }
+
 Matrix::Matrix( std::vector<std::vector<double>> array ) : m(array) {
 	this->_rows = array.size();
 	if (this->_rows == 0)
@@ -51,18 +56,55 @@ int	Matrix::columns( void ) const {
 	return this->_columns;
 }
 
+Matrix	Matrix::repeat_columns( int columns ) const {
+	Matrix	matrix(this->_rows, columns);
+	for (int i = 0; i < matrix.rows(); i++) {
+		for (int j = 0; j < matrix.columns(); j++) {
+			matrix.m[i][j] = this->m[i][0];
+		}
+	}
+	return matrix;
+}
+
+Matrix	Matrix::repeat_rows( int rows ) const {
+	Matrix	matrix(rows, this->_columns);
+	for (int i = 0; i < matrix.rows(); i++) {
+		for (int j = 0; j < matrix.columns(); j++) {
+			matrix.m[i][j] = this->m[0][j];
+		}
+	}
+	return matrix;
+}
 
 Matrix	&Matrix::operator=( const Matrix &og ) {
 	this->_rows = og._rows;
 	this->_columns = og._columns;
 	this->m = og.m;
-	return *this;
+	return (*this);
 }
 
-Matrix	Matrix::operator+( const Matrix &m1 ) const {
-	if (m1.rows() != this->rows() || m1.columns() != this->columns())
-		throw std::invalid_argument("different sizes");
-	Matrix result(m1);
+Matrix	Matrix::operator+( const Matrix &to_add ) const {
+	Matrix result;
+	Matrix	m1;
+	if (to_add.rows() != this->rows() || to_add.columns() != this->columns()) {
+		if ((to_add.columns() == 1 && to_add.rows() == this->rows())) {
+			m1 = to_add.repeat_columns(this->columns());
+			result = *this;
+		} else if (to_add.rows() == 1 && to_add.columns() == this->columns()) {
+			m1 = to_add.repeat_rows(this->rows());
+			result = *this;
+		} else if ((this->columns() == 1 && this->rows() == to_add.rows())) {
+			m1 = this->repeat_columns(to_add.columns());
+			result = to_add;
+		} else if (this->rows() == 1 && this->columns() == to_add.columns()) {
+			m1 = this->repeat_rows(to_add.rows());
+			result = to_add;
+		} else
+			throw std::invalid_argument("different sizes");
+	} else {
+		result = *this;
+		m1 = to_add;
+	}
 	for (int i = 0; i < m1.rows(); i++) {
 		for (int j = 0; j < m1.columns(); j++) {
 			result.m[i][j] += m1.m[i][j];
@@ -71,10 +113,28 @@ Matrix	Matrix::operator+( const Matrix &m1 ) const {
 	return (result);
 }
 
-Matrix	Matrix::operator-( const Matrix &m1 ) const {
-	if (m1.rows() != this->rows() || m1.columns() != this->columns())
-		throw std::invalid_argument("different sizes");
-	Matrix result(m1);
+Matrix	Matrix::operator-( const Matrix &to_subtract ) const {
+	Matrix result;
+	Matrix	m1;
+	if (to_subtract.rows() != this->rows() || to_subtract.columns() != this->columns()) {
+		if ((to_subtract.columns() == 1 && to_subtract.rows() == this->rows())) {
+			m1 = to_subtract.repeat_columns(this->columns());
+			result = *this;
+		} else if (to_subtract.rows() == 1 && to_subtract.columns() == this->columns()) {
+			m1 = to_subtract.repeat_rows(this->rows());
+			result = *this;
+		} else if ((this->columns() == 1 && this->rows() == to_subtract.rows())) {
+			m1 = this->repeat_columns(to_subtract.columns());
+			result = to_subtract;
+		} else if (this->rows() == 1 && this->columns() == to_subtract.columns()) {
+			m1 = this->repeat_rows(to_subtract.rows());
+			result = to_subtract;
+		} else
+			throw std::invalid_argument("different sizes");
+	} else {
+		result = *this;
+		m1 = to_subtract;
+	}
 	for (int i = 0; i < m1.rows(); i++) {
 		for (int j = 0; j < m1.columns(); j++) {
 			result.m[i][j] -= m1.m[i][j];
@@ -84,11 +144,11 @@ Matrix	Matrix::operator-( const Matrix &m1 ) const {
 }
 
 Matrix	Matrix::operator*( const Matrix &mult ) const {
-	if (mult.rows() != this->columns() || mult.columns() != this->rows())
+	if (this->columns() != mult.rows())
 		throw std::invalid_argument("matrices not aligned");
 	Matrix result(this->rows(), mult.columns());
 	for (int i = 0; i < this->rows(); i++) {
-		for (int j = 0; j < this->rows(); j++) {
+		for (int j = 0; j < mult.columns(); j++) {
 			for (int k = 0; k < this->columns(); k++) {
 				result.m[i][j] += this->m[i][k] * mult.m[k][j];
 			}

@@ -6,7 +6,7 @@ NeuralNetwork::NeuralNetwork( int size, int *nodes, double learning_rate )
 	_learning_rate(learning_rate) {
 	this->layers.reserve(size - 1);
 	for (int i = 0; i < size - 1; i++) {
-		this->layers.emplace_back(NetworkLayer(i, nodes[i + 1], nodes[i]));
+		this->layers.emplace_back(NetworkLayer(i, nodes[i], nodes[i + 1]));
 	}
 }
 
@@ -25,16 +25,15 @@ NeuralNetwork	&NeuralNetwork::operator=( const NeuralNetwork &og ) {
 
 NeuralNetwork::~NeuralNetwork() { }
 
-double	NeuralNetwork::feedforward( void ) const {
-	return _learning_rate + _size;
+void	NeuralNetwork::feedforward( const Matrix &inputs ) {
+	Matrix	outputs = inputs;
+	for (auto &layer : layers) {
+		outputs = layer.feedforward(outputs);
+	}
 }
 
-double	NeuralNetwork::backpropagation( double outputs ) const {
-	return outputs * _size;
+void	NeuralNetwork::backpropagation( void ) {
 }
 
-void	NeuralNetwork::training( double *errors, double *deltas ) {
-	(void)errors;
-	(void)deltas;
+void	NeuralNetwork::training( void ) {
 }
-

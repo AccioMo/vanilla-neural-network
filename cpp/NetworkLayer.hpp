@@ -4,6 +4,7 @@
 
 # include <iostream>
 # include "Matrix.hpp"
+# include "math.hpp"
 
 class NetworkLayer {
 	private:
@@ -25,10 +26,20 @@ class NetworkLayer {
 		NetworkLayer	&operator=( const NetworkLayer &og );
 		~NetworkLayer();
 
+		Matrix	&feedforward( const Matrix &inputs );
+
 		Matrix  getWeights( void ) const;
-		void    setWeights( Matrix new_weights );
+		void    setWeights( const Matrix &new_weights );
 		Matrix  getBiases( void ) const;
-		void    setBiases( Matrix new_biases );
+		void    setBiases( Matrix &new_biases );
+
+		Matrix  getOutputs( void ) const;
+		void    setOutputs( Matrix &new_outputs );
+		Matrix  getErrors( void ) const;
+		void    setErrors( Matrix &new_errors );
+		Matrix  getDeltas( void ) const;
+		void    setDeltas( Matrix &new_deltas );
+		
 		int		getIndex( void ) const;
 };
 
