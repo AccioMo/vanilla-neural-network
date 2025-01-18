@@ -10,13 +10,20 @@ NeuralNetwork::NeuralNetwork( int size, int *nodes, double learning_rate )
 	}
 }
 
-NeuralNetwork::NeuralNetwork( const NeuralNetwork &og ) {
-	(void)og;
+NeuralNetwork::NeuralNetwork( const NeuralNetwork &og )
+	: _size(og._size),
+	_learning_rate(og._learning_rate),
+	layers(og.layers)
+{ }
+
+NeuralNetwork	&NeuralNetwork::operator=( const NeuralNetwork &og ) {
+	this->_size = og._size;
+	this->_learning_rate = og._learning_rate;
+	this->layers = og.layers;
+	return (*this);
 }
 
-NeuralNetwork::~NeuralNetwork() {
-
-}
+NeuralNetwork::~NeuralNetwork() { }
 
 double	NeuralNetwork::feedforward( void ) const {
 	return _learning_rate + _size;

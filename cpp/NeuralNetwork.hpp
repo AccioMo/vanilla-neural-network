@@ -17,6 +17,7 @@ class NeuralNetwork {
 		the size - aka. num of nodes (neurons) - of each layer. */
 		NeuralNetwork( int size, int *nodes, double learning_rate );
 		NeuralNetwork( const NeuralNetwork &og );
+		NeuralNetwork	&operator=( const NeuralNetwork &og );
 		~NeuralNetwork( );
 
 		double	feedforward( void ) const;
