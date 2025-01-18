@@ -1,7 +1,7 @@
 CLANG = c++
 FLAGS = -Wall -Wextra -Werror -Wshadow -std=c++11 -g -fsanitize=address
-HEADERS = Matrix.hpp NetworkLayer.hpp NeuralNetwork.hpp math.hpp
-FILES = main.cpp Matrix.cpp NetworkLayer.cpp NeuralNetwork.cpp math.cpp
+HEADERS = Matrix.hpp NetworkLayer.hpp NeuralNetwork.hpp HiddenLayer.hpp OutputLayer.hpp math.hpp
+FILES = main.cpp Matrix.cpp NetworkLayer.cpp NeuralNetwork.cpp HiddenLayer.cpp OutputLayer.cpp math.cpp
 OBJ_DIR = obj/
 OBJ_FILES = $(addprefix $(OBJ_DIR), $(FILES:.cpp=.opp))
 NAME = NeuralNetwork

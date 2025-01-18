@@ -5,6 +5,7 @@
 #include <vector>
 
 #define NETWORK_SIZE 3
+#define HIDDEN_LAYERS 1
 
 int main( void )
 {
@@ -18,12 +19,6 @@ int main( void )
 													   {0},
 													   {0}});
 
-	NetworkLayer	hidden_layer(0, 2, 4);
-	NetworkLayer	output_layer(1, 4, 1);
-
-	// std::cout << inputs + outputs << std::endl;
-	// std::cout << output_layer.getWeights() << std::endl;
-
 	int	nodes[NETWORK_SIZE] = {2, 4, 1};
 	NeuralNetwork	network(NETWORK_SIZE, (int *)nodes, 0.5);
 
@@ -33,19 +28,22 @@ int main( void )
 	Matrix w2((std::vector<std::vector<double>>){{-1.90338}, {-0.597504}, {1.61092}, {1.86572}});
 	Matrix b2((std::vector<std::vector<double>>){{-0.991096}});
 
-	network.layers[0].setWeights(w1);
-	network.layers[0].setBiases(b1);
-
-	network.layers[1].setWeights(w2);
-	network.layers[1].setBiases(b2);
-
-	for (int i = 0; i < NETWORK_SIZE - 1; i++)
-		std::cout << network.layers[i] << std::endl;
+	network.hidden_layers[0].setWeights(w1);
+	network.hidden_layers[0].setBiases(b1);
+	
+	network.output_layer.setWeights(w2);
+	network.output_layer.setBiases(b2);
+	
+	for (int i = 0; i < HIDDEN_LAYERS; i++)
+		std::cout << network.hidden_layers[i] << std::endl;
 
 	network.feedforward(inputs);
+	network.backpropagation(outputs);
 
-	for (int i = 0; i < NETWORK_SIZE - 1; i++)
-		std::cout << network.layers[i].getOutputs() << std::endl;
+	for (int i = 0; i < HIDDEN_LAYERS; i++)
+		std::cout << network.hidden_layers[i].getDeltas() << std::endl;
+
+	std::cout << network.output_layer.getDeltas() << std::endl;
 
     return (0);
 }

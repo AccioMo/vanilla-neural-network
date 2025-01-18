@@ -144,14 +144,27 @@ Matrix	Matrix::operator-( const Matrix &to_subtract ) const {
 }
 
 Matrix	Matrix::operator*( const Matrix &mult ) const {
-	if (this->columns() != mult.rows())
+	if (this->columns() != mult.rows()) {
+		if (this->rows() == mult.rows() && this->columns() == mult.columns())
+			return (this->hadamard_product(mult));
 		throw std::invalid_argument("matrices not aligned");
+	}
 	Matrix result(this->rows(), mult.columns());
 	for (int i = 0; i < this->rows(); i++) {
 		for (int j = 0; j < mult.columns(); j++) {
 			for (int k = 0; k < this->columns(); k++) {
 				result.m[i][j] += this->m[i][k] * mult.m[k][j];
 			}
+		}
+	}
+	return (result);
+}
+
+Matrix	Matrix::hadamard_product( const Matrix &mult ) const {
+	Matrix result(*this);
+	for (int i = 0; i < mult.rows(); i++) {
+		for (int j = 0; j < mult.columns(); j++) {
+			result.m[i][j] *= mult.m[i][j];
 		}
 	}
 	return (result);

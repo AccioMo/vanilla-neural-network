@@ -30,13 +30,14 @@ class Matrix {
 		int	rows( void ) const;
 		int	columns( void ) const;
 
-		Matrix	operator+( const Matrix &m2 ) const;
-		Matrix	operator-( const Matrix &m2 ) const;
-		Matrix	operator*( const Matrix &og ) const;
+		Matrix	operator+( const Matrix &to_add ) const;
+		Matrix	operator-( const Matrix &to_subtract ) const;
+		Matrix	operator*( const Matrix &mult ) const;
 
 		Matrix	transpose( void ) const;
 		Matrix	repeat_columns( int columns ) const;
 		Matrix	repeat_rows( int rows ) const;
+		Matrix	hadamard_product( const Matrix &mult ) const;
 };
 
 std::ostream& operator<<(std::ostream& os, const Matrix& matrix);

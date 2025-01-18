@@ -7,7 +7,7 @@
 # include "math.hpp"
 
 class NetworkLayer {
-	private:
+	protected:
 		const int	_index;
 		int			_neurons;
 
@@ -24,7 +24,7 @@ class NetworkLayer {
 		NetworkLayer( int index, int input_size, int output_size );
 		NetworkLayer( const NetworkLayer &og );
 		NetworkLayer	&operator=( const NetworkLayer &og );
-		~NetworkLayer();
+		virtual	~NetworkLayer() = 0;
 
 		Matrix	&feedforward( const Matrix &inputs );
 

@@ -4,7 +4,8 @@
 
 # include <iostream>
 
-# include "NetworkLayer.hpp"
+# include "HiddenLayer.hpp"
+# include "OutputLayer.hpp"
 
 class NeuralNetwork {
 	private:
@@ -12,7 +13,8 @@ class NeuralNetwork {
 		double	_learning_rate;
 
 	public:
-		std::vector<NetworkLayer>	layers;
+		OutputLayer					output_layer;
+		std::vector<HiddenLayer>	hidden_layers;
 
 		/* `nodes` is an array of size `size` (hehe). It should contain 
 		the size - aka. num of nodes (neurons) - of each layer. */
@@ -22,7 +24,7 @@ class NeuralNetwork {
 		~NeuralNetwork( );
 
 		void	feedforward( const Matrix &inputs );
-		void	backpropagation( void );
+		void	backpropagation( const Matrix &expected_outputs );
 		void	training( void );
 };
 

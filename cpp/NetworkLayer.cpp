@@ -40,13 +40,11 @@ Matrix  NetworkLayer::getWeights( void ) const {
     return (this->_weights);
 }
 
-
 Matrix	&NetworkLayer::feedforward( const Matrix &inputs ) {
 	this->_outputs = (inputs * this->_weights) + this->_biases;
 	this->_outputs = ReLU(this->_outputs);
 	return (this->_outputs);
 }
-
 
 void    NetworkLayer::setWeights( const Matrix &new_weights ) {
 	this->_weights = new_weights;
