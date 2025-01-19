@@ -59,5 +59,12 @@ void	NeuralNetwork::training( Matrix input_batch, Matrix output_batch, int epoch
 		this->feedforward(input_batch);
 		this->backpropagation(output_batch);
 		this->update(input_batch);
+		if (this->output_layer.getErrors().abs().mean() == 0.0)
+			break ;
 	}
+}
+
+Matrix	NeuralNetwork::test( const Matrix input ) {
+	this->feedforward(input);
+	return (this->output_layer.getOutputs());
 }

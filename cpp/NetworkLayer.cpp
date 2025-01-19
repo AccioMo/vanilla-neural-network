@@ -6,7 +6,7 @@ NetworkLayer::NetworkLayer( int input_size, int output_size )
 	_neurons(input_size),
 	_weights(Matrix(input_size, output_size, \
 		xavier_glorot_init(input_size, output_size))),
-	_biases(Matrix(1, output_size, M_RAND))
+	_biases(Matrix(1, output_size, 0.1))
 { }
 
 NetworkLayer::NetworkLayer( const NetworkLayer &og )
@@ -32,12 +32,6 @@ NetworkLayer::~NetworkLayer() { }
 
 Matrix  NetworkLayer::getWeights( void ) const {
     return (this->_weights);
-}
-
-Matrix	&NetworkLayer::feedforward( const Matrix &prev_outputs ) {
-	this->_outputs = (prev_outputs * this->_weights) + this->_biases;
-	this->_outputs = sigmoid(this->_outputs);
-	return (this->_outputs);
 }
 
 void	NetworkLayer::update( const Matrix &prev_outputs, double learning_rate ) {

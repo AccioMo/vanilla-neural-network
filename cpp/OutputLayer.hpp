@@ -10,6 +10,7 @@ class OutputLayer: public NetworkLayer {
 		OutputLayer( const OutputLayer &og );
 		~OutputLayer() override;
 
+		Matrix	&feedforward( const Matrix &prev_outputs ) override;
 		void	backpropagation( const Matrix &expected_outputs );
 };
 

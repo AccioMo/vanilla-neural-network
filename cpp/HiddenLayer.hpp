@@ -14,6 +14,7 @@ class HiddenLayer: public NetworkLayer {
 		HiddenLayer	&operator=( const HiddenLayer &og );
 		~HiddenLayer() override;
 
+		Matrix	&feedforward( const Matrix &prev_outputs ) override;
 		void	backpropagation( const NetworkLayer &next_layer );
 		
 		int		getIndex( void ) const;

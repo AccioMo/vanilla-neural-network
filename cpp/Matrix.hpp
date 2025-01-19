@@ -60,6 +60,9 @@ class Matrix {
 
 		/* returns the absolute value of a matrix */
 		Matrix	abs( void ) const;
+
+		/* normalizes the matrix using min-max scaling */
+		Matrix	normalize( double min, double max ) const;
 };
 
 std::ostream& operator<<(std::ostream& os, const Matrix& matrix);

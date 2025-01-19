@@ -42,11 +42,11 @@ class NetworkLayer {
 		NetworkLayer( int input_size, int output_size );
 		NetworkLayer( const NetworkLayer &og );
 		NetworkLayer	&operator=( const NetworkLayer &og );
-		virtual	~NetworkLayer() = 0;
+		virtual	~NetworkLayer();
 
 		/* feeds output of the previous layer 
 		to the current one to predict output */
-		Matrix	&feedforward( const Matrix &prev_outputs );
+		virtual Matrix	&feedforward( const Matrix &prev_outputs ) = 0;
 
 		/* backpropagation function in derived 
 		HiddenLayer and OutputLayer classes */

@@ -32,6 +32,9 @@ class NeuralNetwork {
 
 		/* ... training ... */
 		void	training( Matrix input_batch, Matrix output_batch, int epochs );
+
+		/* ... test ... */
+		Matrix	test( const Matrix input );
 };
 
 #endif

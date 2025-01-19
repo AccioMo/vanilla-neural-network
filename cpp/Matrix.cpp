@@ -220,6 +220,16 @@ Matrix	Matrix::abs( void ) const {
 	return (abs_matrix);
 }
 
+Matrix	Matrix::normalize( double min, double max ) const {
+	Matrix	normalized_matrix(*this);
+	for (int i = 0; i < this->rows(); i++) {
+		for (int j = 0; j < this->columns(); j++) {
+			normalized_matrix.m[i][j] = (this->m[i][j] - min) / (max - min);
+		}
+	}
+	return (normalized_matrix);
+}
+
 std::ostream& operator<<(std::ostream& os, const Matrix& matrix) {
 	os << "[";
     for (int i = 0; i < matrix.rows(); ++i) {
