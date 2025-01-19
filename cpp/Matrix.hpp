@@ -22,7 +22,7 @@ class Matrix {
 		Matrix( void );
 		Matrix( std::vector<std::vector<double>> array );
 		Matrix( int rows, int columns );
-		Matrix( int rows, int columns, t_starting_value starting_value );
+		Matrix( int rows, int columns, double rand_range );
 		Matrix	&operator=( const Matrix &og );
 		Matrix( const Matrix &og );
 		~Matrix();

@@ -23,14 +23,14 @@ Matrix::Matrix( int rows, int columns ) {
 	this->m = std::vector<std::vector<double>>(rows, std::vector<double>(columns));
 }
 
-Matrix::Matrix( int rows, int columns, t_starting_value starting_value ) {
+Matrix::Matrix( int rows, int columns, double rand_range ) {
 	this->_rows = rows;
 	this->_columns = columns;
 	this->m = std::vector<std::vector<double>>(rows, std::vector<double>(columns));
-	if (starting_value == M_RAND) {
+	if (rand_range != 0) {
 		std::random_device					rd;
 		std::mt19937						gen(rd());
-		std::uniform_real_distribution<>	dis(-3.0, 3.0);
+		std::uniform_real_distribution<>	dis(-rand_range, rand_range);
 		for ( auto &row : this->m ) {
 			for (auto &value : row) {
 				value = dis(gen);

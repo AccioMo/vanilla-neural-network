@@ -4,7 +4,8 @@
 NetworkLayer::NetworkLayer( int input_size, int output_size )
 	: _type("none"),
 	_neurons(input_size),
-	_weights(Matrix(input_size, output_size, M_RAND)),
+	_weights(Matrix(input_size, output_size, \
+		xavier_glorot_init(input_size, output_size))),
 	_biases(Matrix(1, output_size, M_RAND))
 { }
 
