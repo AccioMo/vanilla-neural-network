@@ -5,11 +5,7 @@ NetworkLayer::NetworkLayer( int input_size, int output_size )
 	: _type("none"),
 	_neurons(input_size),
 	_weights(Matrix(input_size, output_size, M_RAND)),
-	_biases(Matrix(output_size, 1, M_RAND))
-
-	// _outputs(Matrix(output_size, input_size)),
-	// _errors(Matrix(output_size, input_size)),
-	// _deltas(Matrix(output_size, input_size))
+	_biases(Matrix(1, output_size, M_RAND))
 { }
 
 NetworkLayer::NetworkLayer( const NetworkLayer &og )
@@ -17,10 +13,6 @@ NetworkLayer::NetworkLayer( const NetworkLayer &og )
 	_neurons(og._neurons),
 	_weights(og._weights),
 	_biases(og._biases)
-
-	// _outputs(og._outputs),
-	// _errors(og._errors),
-	// _deltas(og._deltas)
 { }
 
 NetworkLayer	&NetworkLayer::operator=( const NetworkLayer &og ) {
@@ -93,7 +85,7 @@ std::string  NetworkLayer::getType( void ) const {
 }
 
 std::ostream	&operator<<( std::ostream &os, NetworkLayer &nl ) {
-	os << "\t --- Layer " << nl.getType() << " --- " << std::endl;
+	os << "\t --- " << nl.getType() << " layer --- " << std::endl;
 	os << "  < Weights > " << std::endl << nl.getWeights() << std::endl;
 	os << std::endl;
 	os << "  < Biases > " << std::endl << nl.getBiases() << std::endl;
