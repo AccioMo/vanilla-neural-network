@@ -6,7 +6,7 @@
 
 class OutputLayer: public NetworkLayer {
 	public:
-		OutputLayer( int index, int input_size, int output_size );
+		OutputLayer( int input_size, int output_size );
 		OutputLayer( const OutputLayer &og );
 		~OutputLayer() override;
 

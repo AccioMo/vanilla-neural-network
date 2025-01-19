@@ -30,13 +30,29 @@ class Matrix {
 		int	rows( void ) const;
 		int	columns( void ) const;
 
+		/* default matrix addition and subtraction. if the matrices 
+		are of different sizes it attempts a broadcast */
 		Matrix	operator+( const Matrix &to_add ) const;
 		Matrix	operator-( const Matrix &to_subtract ) const;
+
+		/* default matrix multiplication. if the matrices 
+		are not aligned it applies hadamard product */
 		Matrix	operator*( const Matrix &mult ) const;
 
+		/* default matrix scalar multiplication */
+		Matrix	operator*( const double mult ) const;
+
+		/* sums the matrix along its columns (collapsing rows) */
+		Matrix	sum_columns( void ) const;
+
+		/* matrix transpose */
 		Matrix	transpose( void ) const;
-		Matrix	repeat_columns( int columns ) const;
-		Matrix	repeat_rows( int rows ) const;
+
+		/* repeats columns/rows `n` times. used in broadcast */
+		Matrix	repeat_columns( int n ) const;
+		Matrix	repeat_rows( int n ) const;
+
+		/* hadamard product. used in multiplication overload */
 		Matrix	hadamard_product( const Matrix &mult ) const;
 };
 

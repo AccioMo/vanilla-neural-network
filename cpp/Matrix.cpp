@@ -113,6 +113,16 @@ Matrix	Matrix::operator+( const Matrix &to_add ) const {
 	return (result);
 }
 
+Matrix	Matrix::operator*( const double mult ) const {
+	Matrix result(*this);
+	for (int i = 0; i < result.rows(); i++) {
+		for (int j = 0; j < result.columns(); j++) {
+			result.m[i][j] *= mult;
+		}
+	}
+	return (result);
+}
+
 Matrix	Matrix::operator-( const Matrix &to_subtract ) const {
 	Matrix result;
 	Matrix	m1;
@@ -165,6 +175,16 @@ Matrix	Matrix::hadamard_product( const Matrix &mult ) const {
 	for (int i = 0; i < mult.rows(); i++) {
 		for (int j = 0; j < mult.columns(); j++) {
 			result.m[i][j] *= mult.m[i][j];
+		}
+	}
+	return (result);
+}
+
+Matrix	Matrix::sum_columns( void ) const {
+	Matrix result(1, this->columns());
+	for (int i = 0; i < this->rows(); i++) {
+		for (int j = 0; j < this->columns(); j++) {
+			result.m[0][j] += this->m[i][j];
 		}
 	}
 	return (result);

@@ -1,29 +1,30 @@
 
 #include "NetworkLayer.hpp"
 
-NetworkLayer::NetworkLayer( int index, int input_size, int output_size )
-	: _index(index),
+NetworkLayer::NetworkLayer( int input_size, int output_size )
+	: _type("none"),
 	_neurons(input_size),
 	_weights(Matrix(input_size, output_size, M_RAND)),
-	_biases(Matrix(output_size, 1, M_RAND)),
+	_biases(Matrix(output_size, 1, M_RAND))
 
-	_outputs(Matrix(output_size, input_size)),
-	_errors(Matrix(output_size, input_size)),
-	_deltas(Matrix(output_size, input_size))
+	// _outputs(Matrix(output_size, input_size)),
+	// _errors(Matrix(output_size, input_size)),
+	// _deltas(Matrix(output_size, input_size))
 { }
 
 NetworkLayer::NetworkLayer( const NetworkLayer &og )
-	: _index(og._index),
+	: _type(og._type),
 	_neurons(og._neurons),
 	_weights(og._weights),
-	_biases(og._biases),
+	_biases(og._biases)
 
-	_outputs(og._outputs),
-	_errors(og._errors),
-	_deltas(og._deltas)
+	// _outputs(og._outputs),
+	// _errors(og._errors),
+	// _deltas(og._deltas)
 { }
 
 NetworkLayer	&NetworkLayer::operator=( const NetworkLayer &og ) {
+	this->_type = og._type;
 	this->_neurons = og._neurons;
 	this->_weights = og._weights;
 	this->_biases = og._biases;
@@ -40,10 +41,15 @@ Matrix  NetworkLayer::getWeights( void ) const {
     return (this->_weights);
 }
 
-Matrix	&NetworkLayer::feedforward( const Matrix &inputs ) {
-	this->_outputs = (inputs * this->_weights) + this->_biases;
-	this->_outputs = ReLU(this->_outputs);
+Matrix	&NetworkLayer::feedforward( const Matrix &prev_outputs ) {
+	this->_outputs = (prev_outputs * this->_weights) + this->_biases;
+	this->_outputs = sigmoid(this->_outputs);
 	return (this->_outputs);
+}
+
+void	NetworkLayer::update( const Matrix &prev_outputs, double learning_rate ) {
+	this->_weights = this->_weights + ((prev_outputs.transpose() * this->_deltas) * learning_rate);
+	this->_biases = this->_biases + (this->_deltas.sum_columns() * learning_rate);
 }
 
 void    NetworkLayer::setWeights( const Matrix &new_weights ) {
@@ -82,12 +88,12 @@ void    NetworkLayer::setDeltas( Matrix &new_deltas ) {
 	this->_deltas = new_deltas;
 }
 
-int  NetworkLayer::getIndex( void ) const {
-    return (this->_index);
+std::string  NetworkLayer::getType( void ) const {
+    return (this->_type);
 }
 
 std::ostream	&operator<<( std::ostream &os, NetworkLayer &nl ) {
-	os << "\t --- Layer " << nl.getIndex() << " --- " << std::endl;
+	os << "\t --- Layer " << nl.getType() << " --- " << std::endl;
 	os << "  < Weights > " << std::endl << nl.getWeights() << std::endl;
 	os << std::endl;
 	os << "  < Biases > " << std::endl << nl.getBiases() << std::endl;

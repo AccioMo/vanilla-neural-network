@@ -23,9 +23,15 @@ class NeuralNetwork {
 		NeuralNetwork	&operator=( const NeuralNetwork &og );
 		~NeuralNetwork( );
 
+		/* ... feedforward ... */
 		void	feedforward( const Matrix &inputs );
+
+		/* ... backpropagation ... */
 		void	backpropagation( const Matrix &expected_outputs );
-		void	training( void );
+		void	update( const Matrix &inputs );
+
+		/* ... training ... */
+		void	training( Matrix input_batch, Matrix output_batch, int epochs );
 };
 
 #endif
