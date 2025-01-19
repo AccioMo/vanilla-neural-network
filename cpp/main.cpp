@@ -32,12 +32,12 @@ int main( void )
 	NeuralNetwork	network(NETWORK_SIZE, (int *)nodes, 0.5);
 	
 	double start = ft_get_time();
-	network.training(inputs, outputs, 5000);
+	network.training(inputs, outputs, 50000);
 
 	std::cout << network.hidden_layers[0] << std::endl;
 	std::cout << network.output_layer << std::endl;
-	std::cout << "error: \n" << network.output_layer.getErrors() << std::endl;
-	std::cout << "took " << ft_get_time() - start << "ms" << std::endl;
+	std::cout << "accuracy	: " << (1 - network.output_layer.getErrors().abs().mean()) * 100 << "%" << std::endl;
+	std::cout << "time		: " << (ft_get_time() - start) / 1000 << "s" << std::endl;
 
     return (0);
 }

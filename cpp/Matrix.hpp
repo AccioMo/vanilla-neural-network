@@ -54,6 +54,12 @@ class Matrix {
 
 		/* hadamard product. used in multiplication overload */
 		Matrix	hadamard_product( const Matrix &mult ) const;
+
+		/* calculates the arithmetic mean of the matrix */
+		double	mean( void ) const;
+
+		/* returns the absolute value of a matrix */
+		Matrix	abs( void ) const;
 };
 
 std::ostream& operator<<(std::ostream& os, const Matrix& matrix);

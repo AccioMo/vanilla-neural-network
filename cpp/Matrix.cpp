@@ -200,6 +200,26 @@ Matrix	Matrix::transpose( void ) const {
 	return (T);
 }
 
+double	Matrix::mean( void ) const {
+	double	sum_value = 0.0;
+	for (int i = 0; i < this->rows(); i++) {
+		for (int j = 0; j < this->columns(); j++) {
+			sum_value += this->m[i][j];
+		}
+	}
+	return (sum_value / (this->rows() * this->columns()));
+}
+
+Matrix	Matrix::abs( void ) const {
+	Matrix	abs_matrix(*this);
+	for (int i = 0; i < this->rows(); i++) {
+		for (int j = 0; j < this->columns(); j++) {
+			abs_matrix.m[i][j] = std::abs(this->m[i][j]);
+		}
+	}
+	return (abs_matrix);
+}
+
 std::ostream& operator<<(std::ostream& os, const Matrix& matrix) {
 	os << "[";
     for (int i = 0; i < matrix.rows(); ++i) {

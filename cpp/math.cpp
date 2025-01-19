@@ -32,5 +32,5 @@ Matrix	sigmoid_derivative( const Matrix &input ) {
 }
 
 double	xavier_glorot_init(int fan_in, int fan_out) {
-	return (4 * sqrt(6 / (fan_in + fan_out)));
+	return (4.0 * sqrt(6.0 / (double)(fan_in + fan_out)));
 }
