@@ -140,7 +140,9 @@ Matrix	Matrix::operator-( const Matrix &to_subtract ) const {
 			m1 = this->repeat_rows(to_subtract.rows());
 			result = to_subtract;
 		} else
-			throw std::invalid_argument("different sizes");
+			throw std::invalid_argument("different sizes " + std::to_string(this->rows()) \
+				+ "x" + std::to_string(this->columns()) + " and " + std::to_string(to_subtract.rows()) \
+				+ "x" + std::to_string(to_subtract.columns()));
 	} else {
 		result = *this;
 		m1 = to_subtract;
@@ -230,18 +232,50 @@ Matrix	Matrix::normalize( double min, double max ) const {
 	return (normalized_matrix);
 }
 
+Matrix	Matrix::denormalize( double min, double max ) const {
+	Matrix	denormalized_matrix(*this);
+	for (int i = 0; i < this->rows(); i++) {
+		for (int j = 0; j < this->columns(); j++) {
+			denormalized_matrix.m[i][j] = this->m[i][j] * (max - min) + min;
+		}
+	}
+	return (denormalized_matrix);
+}
+
+double	Matrix::min() const {
+	double	minimum = std::numeric_limits<double>::max();
+	for (int i = 0; i < this->rows(); i++) {
+		for (int j = 0; j < this->columns(); j++) {
+			if (this->m[i][j] < minimum)
+			minimum = this->m[i][j];
+		}
+	}
+	return (minimum);
+}
+
+double	Matrix::max() const {
+	double	maximum = std::numeric_limits<double>::min();
+	for (int i = 0; i < this->rows(); i++) {
+		for (int j = 0; j < this->columns(); j++) {
+			if (this->m[i][j] > maximum)
+			maximum = this->m[i][j];
+		}
+	}
+	return (maximum);
+}
+
 std::ostream& operator<<(std::ostream& os, const Matrix& matrix) {
-	os << "[";
+	os << "{";
     for (int i = 0; i < matrix.rows(); ++i) {
 		if (i != 0) os << " ";
-		os << "[";
+		os << "{";
         for (int j = 0; j < matrix.columns(); ++j) {
             os << matrix.m[i][j];
-			if (j != matrix.columns() - 1) os << " ";
+			if (j != matrix.columns() - 1) os << ", ";
         }
-		os << "]";
+		os << "}, ";
         if (i != matrix.rows() - 1) os << "\n";
     }
-	os << "]";
+	os << "}";
     return os;
 }

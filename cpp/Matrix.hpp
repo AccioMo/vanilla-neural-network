@@ -63,6 +63,15 @@ class Matrix {
 
 		/* normalizes the matrix using min-max scaling */
 		Matrix	normalize( double min, double max ) const;
+
+		/* reverse normalizes the matrix using min-max scaling */
+		Matrix	denormalize( double min, double max ) const;
+
+		/* returns minimum value in the matrix */
+		double	min() const;
+
+		/* returns maximum value in the matrix */
+		double	max() const;
 };
 
 std::ostream& operator<<(std::ostream& os, const Matrix& matrix);
