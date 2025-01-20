@@ -8,6 +8,7 @@ class OutputLayer: public NetworkLayer {
 	public:
 		OutputLayer( int input_size, int output_size );
 		OutputLayer( const OutputLayer &og );
+		OutputLayer	&operator=( const OutputLayer &og );
 		~OutputLayer() override;
 
 		Matrix	&feedforward( const Matrix &prev_outputs ) override;

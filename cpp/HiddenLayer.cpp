@@ -15,8 +15,9 @@ HiddenLayer::HiddenLayer( const HiddenLayer &og )
 
 HiddenLayer	&HiddenLayer::operator=( const HiddenLayer &og )
 {
-	(void)og;
-	return (*this);
+	if (this == &og)
+		return *this;
+	return *this;
 }
 
 HiddenLayer::~HiddenLayer() { }

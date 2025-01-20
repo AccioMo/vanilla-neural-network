@@ -3,6 +3,7 @@
 #include "NetworkLayer.hpp"
 #include "Matrix.hpp"
 #include <vector>
+#include <iomanip>
 
 #define NETWORK_SIZE 3
 #define HIDDEN_LAYERS NETWORK_SIZE - 2
@@ -135,20 +136,26 @@ int main( void )
 
 Matrix	test_inputs((std::vector<std::vector<double>>)
 													{
-													{0, 0, 1, 0,
-													 0, 1, 1, 1,
+													{0, 0, 0, 0,
+													 0, 0, 1, 0,
 													 0, 0, 1, 0,
 													 0, 0, 0, 0}});
 
-	network.test(test_inputs);
-	for (auto &in : {0.0, 1.0, 2.0}) {
-		double	loss = network.output_layer.getErrors().denormalize(raw_outputs.min(), raw_outputs.max()).abs().mean();
-		if (round(in) == 0)
-			std::cout << "horizontal with " << (1 - loss) * 100 << "% certainty" << std::endl;
-		else if (round(in) == 1)
-			std::cout << "vertical with " << (1 - loss) * 100 << "% certainty" << std::endl;
-		else if (round(in) == 2)
-			std::cout << "cross with " << (1 - loss) * 100 << "% certainty" << std::endl;
+	Matrix result = network.test(test_inputs);
+
+	Matrix	output_options((vec){{0.0, 1.0, 2.0}});
+	output_options = output_options.normalize(output_options.min(), output_options.max());
+
+	for (int i = 0; i < (int)output_options.m[0].size(); i++) {
+		result = result.denormalize(raw_outputs.min(), raw_outputs.max());
+		network.backpropagation((vec){{output_options.m[0][i]}});
+		double	loss = network.output_layer.getErrors().abs().mean();
+		if (i == 0)
+			std::cout << "horizontal with " << std::fixed << std::setprecision(2) << (1 - loss) * 100 << "% certainty" << std::endl;
+		else if (i == 1)
+			std::cout << "vertical with " << std::fixed << std::setprecision(2) << (1 - loss) * 100 << "% certainty" << std::endl;
+		else if (i == 2)
+			std::cout << "cross with " << std::fixed << std::setprecision(2) << (1 - loss) * 100 << "% certainty" << std::endl;
 	}
 
 

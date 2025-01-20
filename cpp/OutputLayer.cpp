@@ -11,6 +11,12 @@ OutputLayer::OutputLayer( const OutputLayer &og )
 	: NetworkLayer(og)
 { }
 
+OutputLayer	&OutputLayer::operator=( const OutputLayer &og ) {
+	if (this == &og)
+		return *this;
+	return *this;
+}
+
 OutputLayer::~OutputLayer() { }
 
 Matrix	&OutputLayer::feedforward( const Matrix &prev_outputs ) {
