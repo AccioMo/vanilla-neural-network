@@ -6,7 +6,7 @@ Matrix::Matrix( void )
 	_columns(0)
 { }
 
-Matrix::Matrix( std::vector<std::vector<double>> array ) : m(array) {
+Matrix::Matrix( t_vec array ) : m(array) {
 	this->_rows = array.size();
 	if (this->_rows == 0)
 			throw std::invalid_argument("empty array");
@@ -20,13 +20,13 @@ Matrix::Matrix( std::vector<std::vector<double>> array ) : m(array) {
 Matrix::Matrix( int rows, int columns ) {
 	this->_rows = rows;
 	this->_columns = columns;
-	this->m = std::vector<std::vector<double>>(rows, std::vector<double>(columns));
+	this->m = t_vec(rows, std::vector<double>(columns));
 }
 
 Matrix::Matrix( int rows, int columns, double rand_range ) {
 	this->_rows = rows;
 	this->_columns = columns;
-	this->m = std::vector<std::vector<double>>(rows, std::vector<double>(columns));
+	this->m = t_vec(rows, std::vector<double>(columns));
 	if (rand_range != 0) {
 		std::random_device					rd;
 		std::mt19937						gen(rd());
@@ -273,8 +273,8 @@ std::ostream& operator<<(std::ostream& os, const Matrix& matrix) {
             os << matrix.m[i][j];
 			if (j != matrix.columns() - 1) os << ", ";
         }
-		os << "}, ";
-        if (i != matrix.rows() - 1) os << "\n";
+		os << "}";
+        if (i != matrix.rows() - 1) os << ", \n";
     }
 	os << "}";
     return os;

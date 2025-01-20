@@ -6,10 +6,7 @@
 # include <vector>
 # include <random>
 
-typedef enum e_starting_value {
-	M_ZEROS,
-	M_RAND
-}	t_starting_value;
+typedef std::vector<std::vector<double>> t_vec;
 
 class Matrix {
 	private:
@@ -17,10 +14,10 @@ class Matrix {
 		int	_columns;
 
 	public:
-		std::vector<std::vector<double>>	m;
+		t_vec	m;
 
 		Matrix( void );
-		Matrix( std::vector<std::vector<double>> array );
+		Matrix( t_vec array );
 		Matrix( int rows, int columns );
 		Matrix( int rows, int columns, double rand_range );
 		Matrix	&operator=( const Matrix &og );
