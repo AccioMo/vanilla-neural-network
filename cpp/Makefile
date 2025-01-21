@@ -25,7 +25,7 @@ debug: $(OBJ_DIR) $(NAME)
 
 clean:
 	rm -f $(OBJ_FILES)
-	rmdir $(OBJ_DIR) 2>/dev/null || True
+	rm -r $(OBJ_DIR)
 
 fclean: clean
 	rm -f $(NAME)

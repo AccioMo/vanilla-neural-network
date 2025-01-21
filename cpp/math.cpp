@@ -21,6 +21,26 @@ Matrix	sigmoid( const Matrix &input ) {
 	return (output);
 }
 
+Matrix	exp( const Matrix &input ) {
+	Matrix	output = input;
+	for (auto &row : output.m) {
+		for (auto &element : row) {
+			element = std::exp(element);
+		}
+	}
+	return (output);
+}
+
+double	sum( const Matrix &input ) {
+	double	output = 0;
+	for (auto &row : input.m) {
+		for (auto &element : row) {
+			output += element;
+		}
+	}
+	return (output);
+}
+
 Matrix	sigmoid_derivative( const Matrix &input ) {
 	Matrix	output = input;
 	for (auto &row : output.m) {

@@ -64,6 +64,34 @@ void	NeuralNetwork::training( Matrix input_batch, Matrix output_batch, int epoch
 	}
 }
 
+void	NeuralNetwork::saveConfig(const char *filename) const {
+    std::ofstream file(filename, std::ios::out);
+    
+    if (file.is_open()) {
+		file << "{\n";
+   		file << "\"size\": " << this->_size << "," << std::endl;
+		file << "\"learning_rate\": " << this->_learning_rate << ", " << std::endl;
+		file << "\"hidden_layers\": [\n";
+		for (auto &layer : this->hidden_layers) {
+			file << "{" << std::endl;
+			file << "\"weights\": " << layer.getWeights() << ", " << std::endl;
+			file << "\"biases\": " << layer.getBiases() << std::endl;
+			file << "}";
+			if (&layer != &this->hidden_layers.back())
+				file << std::endl << "," << std::endl;
+		}
+		file << "],\n";
+		file << "\"output_layer\": {" << std::endl;
+		file << "\"weights\": " << this->output_layer.getWeights() << ", " << std::endl;
+		file << "\"biases\": " << this->output_layer.getBiases() << std::endl;
+		file << "}";
+		file << "}" << std::endl;
+        file.close();
+    } else {
+        std::cerr << "Error opening file: " << filename << std::endl;
+    }
+}
+
 Matrix	NeuralNetwork::test( const Matrix input ) {
 	this->feedforward(input);
 	return (this->output_layer.getOutputs());

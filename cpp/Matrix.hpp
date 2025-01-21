@@ -36,8 +36,11 @@ class Matrix {
 		are not aligned it applies hadamard product */
 		Matrix	operator*( const Matrix &mult ) const;
 
-		/* default matrix scalar multiplication */
-		Matrix	operator*( const double mult ) const;
+		/* default matrix scalar operations */
+		Matrix	operator*( const double scalar ) const;
+		Matrix	operator/( const double scalar ) const;
+		Matrix	operator-( const double scalar ) const;
+		Matrix	operator+( const double scalar ) const;
 
 		/* sums the matrix along its columns (collapsing rows) */
 		Matrix	sum_columns( void ) const;

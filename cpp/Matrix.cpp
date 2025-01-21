@@ -113,11 +113,41 @@ Matrix	Matrix::operator+( const Matrix &to_add ) const {
 	return (result);
 }
 
-Matrix	Matrix::operator*( const double mult ) const {
+Matrix	Matrix::operator*( const double scalar ) const {
 	Matrix result(*this);
 	for (int i = 0; i < result.rows(); i++) {
 		for (int j = 0; j < result.columns(); j++) {
-			result.m[i][j] *= mult;
+			result.m[i][j] *= scalar;
+		}
+	}
+	return (result);
+}
+
+Matrix	Matrix::operator/( const double scalar ) const {
+	Matrix result(*this);
+	for (int i = 0; i < result.rows(); i++) {
+		for (int j = 0; j < result.columns(); j++) {
+			result.m[i][j] /= scalar;
+		}
+	}
+	return (result);
+}
+
+Matrix	Matrix::operator-( const double scalar ) const {
+	Matrix result(*this);
+	for (int i = 0; i < result.rows(); i++) {
+		for (int j = 0; j < result.columns(); j++) {
+			result.m[i][j] -= scalar;
+		}
+	}
+	return (result);
+}
+
+Matrix	Matrix::operator+( const double scalar ) const {
+	Matrix result(*this);
+	for (int i = 0; i < result.rows(); i++) {
+		for (int j = 0; j < result.columns(); j++) {
+			result.m[i][j] += scalar;
 		}
 	}
 	return (result);
@@ -265,17 +295,17 @@ double	Matrix::max() const {
 }
 
 std::ostream& operator<<(std::ostream& os, const Matrix& matrix) {
-	os << "{";
+	os << "[";
     for (int i = 0; i < matrix.rows(); ++i) {
 		if (i != 0) os << " ";
-		os << "{";
+		os << "[";
         for (int j = 0; j < matrix.columns(); ++j) {
             os << matrix.m[i][j];
 			if (j != matrix.columns() - 1) os << ", ";
         }
-		os << "}";
+		os << "]";
         if (i != matrix.rows() - 1) os << ", \n";
     }
-	os << "}";
+	os << "]";
     return os;
 }

@@ -3,6 +3,7 @@
 # define NEURALNETWORK_HPP
 
 # include <iostream>
+# include <fstream>
 
 # include "HiddenLayer.hpp"
 # include "OutputLayer.hpp"
@@ -33,8 +34,11 @@ class NeuralNetwork {
 		/* ... training ... */
 		void	training( Matrix input_batch, Matrix output_batch, int epochs );
 
-		/* ... test ... */
+		/* ... testing ... */
 		Matrix	test( const Matrix input );
+
+		/* ... saving ... */
+		void	saveConfig(const char *filename) const;
 };
 
 #endif
