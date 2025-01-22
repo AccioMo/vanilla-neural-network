@@ -59,12 +59,11 @@ void	NeuralNetwork::training( Matrix input_batch, Matrix output_batch, int epoch
 		this->feedforward(input_batch);
 		this->backpropagation(output_batch);
 		this->update(input_batch);
-		if (this->output_layer.getErrors().abs().mean() == 0.0)
-			break ;
+		std::cout << "\033[A\r\033[Kaccuracy	: " << std::fixed << std::setprecision(2) << this->calculateAccuracy(output_batch).mean() * 100.0 << "%" << std::endl;
 	}
 }
 
-void	NeuralNetwork::saveConfig(const char *filename) const {
+void	NeuralNetwork::saveConfigJson( const char *filename ) const {
     std::ofstream file(filename, std::ios::out);
     
     if (file.is_open()) {
@@ -95,4 +94,34 @@ void	NeuralNetwork::saveConfig(const char *filename) const {
 Matrix	NeuralNetwork::test( const Matrix input ) {
 	this->feedforward(input);
 	return (this->output_layer.getOutputs());
+}
+
+Matrix	NeuralNetwork::calculateEntropy( void ) const {
+	/* entropy = -sum(p * log(p)) */
+	double	epsilon = 1e-15;
+	Matrix	predicted_outputs = this->output_layer.getOutputs();
+	Matrix	entropy = predicted_outputs.hadamard_product(log(predicted_outputs + epsilon)).sum_rows() * -1.0;
+	return (entropy);
+}
+
+Matrix	NeuralNetwork::calculateAccuracy( const Matrix &expected_ouputs ) const {
+	/* assuming softmax activation */
+	Matrix	predicted_ouputs = this->output_layer.getOutputs().argmax();
+	return (predicted_ouputs == expected_ouputs);
+}
+
+Matrix	NeuralNetwork::getEntropy( void ) const {
+	return (_entropy);
+}
+
+Matrix	NeuralNetwork::getConfidence( void ) const {
+	return (_confidence);
+}
+
+void	NeuralNetwork::setEntropy( Matrix entropy  ) {
+	this->_entropy = entropy;
+}
+
+void	NeuralNetwork::setConfidence( Matrix confidence  ) {
+	this->_confidence = confidence;
 }

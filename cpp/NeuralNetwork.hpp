@@ -12,6 +12,8 @@ class NeuralNetwork {
 	private:
 		int		_size;
 		double	_learning_rate;
+		Matrix	_entropy;
+		Matrix	_confidence;
 
 	public:
 		OutputLayer					output_layer;
@@ -29,6 +31,8 @@ class NeuralNetwork {
 
 		/* ... backpropagation ... */
 		void	backpropagation( const Matrix &expected_outputs );
+
+		/* ... update ... */
 		void	update( const Matrix &inputs );
 
 		/* ... training ... */
@@ -38,7 +42,19 @@ class NeuralNetwork {
 		Matrix	test( const Matrix input );
 
 		/* ... saving ... */
-		void	saveConfig(const char *filename) const;
+		void	saveConfigJson(const char *filename) const;
+
+		/* ... evaluation ... */
+		Matrix	calculateEntropy( void ) const;
+		Matrix	calculateAccuracy( const Matrix &expected_ouputs ) const;
+
+		/* ... getters ... */
+		Matrix	getEntropy( void ) const;
+		Matrix	getConfidence( void ) const;
+
+		/* ... setters ... */
+		void	setEntropy( Matrix entropy  );
+		void	setConfidence( Matrix confidence  );
 };
 
 #endif

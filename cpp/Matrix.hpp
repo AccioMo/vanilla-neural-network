@@ -36,14 +36,24 @@ class Matrix {
 		are not aligned it applies hadamard product */
 		Matrix	operator*( const Matrix &mult ) const;
 
+		/* uses hadamard division */
+		Matrix	operator/( const Matrix &divide ) const;
+
+		/* comparison operator overload */
+		Matrix	operator==( const Matrix &m2 ) const;
+
 		/* default matrix scalar operations */
 		Matrix	operator*( const double scalar ) const;
 		Matrix	operator/( const double scalar ) const;
 		Matrix	operator-( const double scalar ) const;
 		Matrix	operator+( const double scalar ) const;
 
+
 		/* sums the matrix along its columns (collapsing rows) */
 		Matrix	sum_columns( void ) const;
+
+		/* sums the matrix along its rows (collapsing columns) */
+		Matrix	sum_rows( void ) const;
 
 		/* matrix transpose */
 		Matrix	transpose( void ) const;
@@ -55,11 +65,13 @@ class Matrix {
 		/* hadamard product. used in multiplication overload */
 		Matrix	hadamard_product( const Matrix &mult ) const;
 
+		/* hadamard division. used in division overload */
+		Matrix	hadamard_division( const Matrix &divide ) const;
+
+		Matrix	argmax( void ) const;
+
 		/* calculates the arithmetic mean of the matrix */
 		double	mean( void ) const;
-
-		/* returns the absolute value of a matrix */
-		Matrix	abs( void ) const;
 
 		/* normalizes the matrix using min-max scaling */
 		Matrix	normalize( double min, double max ) const;
@@ -72,6 +84,9 @@ class Matrix {
 
 		/* returns maximum value in the matrix */
 		double	max() const;
+		
+		/* returns maximum value on each row */
+		Matrix	row_max() const;
 };
 
 std::ostream& operator<<(std::ostream& os, const Matrix& matrix);

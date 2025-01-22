@@ -100,7 +100,9 @@ Matrix	Matrix::operator+( const Matrix &to_add ) const {
 			m1 = this->repeat_rows(to_add.rows());
 			result = to_add;
 		} else
-			throw std::invalid_argument("different sizes");
+			throw std::invalid_argument("addition not possible: " + std::to_string(this->rows()) \
+				+ "x" + std::to_string(this->columns()) + " and " + std::to_string(to_add.rows()) \
+				+ "x" + std::to_string(to_add.columns()));
 	} else {
 		result = *this;
 		m1 = to_add;
@@ -170,7 +172,7 @@ Matrix	Matrix::operator-( const Matrix &to_subtract ) const {
 			m1 = this->repeat_rows(to_subtract.rows());
 			result = to_subtract;
 		} else
-			throw std::invalid_argument("different sizes " + std::to_string(this->rows()) \
+			throw std::invalid_argument("subtraction not possible: " + std::to_string(this->rows()) \
 				+ "x" + std::to_string(this->columns()) + " and " + std::to_string(to_subtract.rows()) \
 				+ "x" + std::to_string(to_subtract.columns()));
 	} else {
@@ -189,7 +191,9 @@ Matrix	Matrix::operator*( const Matrix &mult ) const {
 	if (this->columns() != mult.rows()) {
 		if (this->rows() == mult.rows() && this->columns() == mult.columns())
 			return (this->hadamard_product(mult));
-		throw std::invalid_argument("matrices not aligned");
+		throw std::invalid_argument("multiplication not possible: " + std::to_string(this->rows()) \
+			+ "x" + std::to_string(this->columns()) + " and " + std::to_string(mult.rows()) \
+			+ "x" + std::to_string(mult.columns()));
 	}
 	Matrix result(this->rows(), mult.columns());
 	for (int i = 0; i < this->rows(); i++) {
@@ -202,11 +206,48 @@ Matrix	Matrix::operator*( const Matrix &mult ) const {
 	return (result);
 }
 
+Matrix	Matrix::operator/( const Matrix &divide ) const {
+	return (this->hadamard_division(divide));
+}
+
+Matrix	Matrix::operator==( const Matrix &m2 ) const {
+	if (m2.rows() != this->rows() || m2.columns() != this->columns())
+		throw std::invalid_argument("comparison not possible: " + std::to_string(this->rows()) \
+			+ "x" + std::to_string(this->columns()) + " and " + std::to_string(m2.rows()) \
+			+ "x" + std::to_string(m2.columns()));
+	Matrix result(this->rows(), 1);
+	for (int i = 0; i < this->rows(); i++) {
+		result.m[i][0] = 1;
+		for (int j = 0; j < m2.columns(); j++) {
+			result.m[i][0] *= this->m[i][j] == m2.m[i][j];
+		}
+	}
+	return (result);
+}
+
 Matrix	Matrix::hadamard_product( const Matrix &mult ) const {
+	if (mult.rows() != this->rows() || mult.columns() != this->columns())
+		throw std::invalid_argument("hadamard multiplication not possible: " + std::to_string(this->rows()) \
+			+ "x" + std::to_string(this->columns()) + " and " + std::to_string(mult.rows()) \
+			+ "x" + std::to_string(mult.columns()));
 	Matrix result(*this);
 	for (int i = 0; i < mult.rows(); i++) {
 		for (int j = 0; j < mult.columns(); j++) {
 			result.m[i][j] *= mult.m[i][j];
+		}
+	}
+	return (result);
+}
+
+Matrix	Matrix::hadamard_division( const Matrix &divide ) const {
+	if (divide.rows() != this->rows() || divide.columns() != this->columns())
+		throw std::invalid_argument("hadamard division not possible: " + std::to_string(this->rows()) \
+			+ "x" + std::to_string(this->columns()) + " and " + std::to_string(divide.rows()) \
+			+ "x" + std::to_string(divide.columns()));
+	Matrix result(*this);
+	for (int i = 0; i < divide.rows(); i++) {
+		for (int j = 0; j < divide.columns(); j++) {
+			result.m[i][j] /= divide.m[i][j];
 		}
 	}
 	return (result);
@@ -217,6 +258,16 @@ Matrix	Matrix::sum_columns( void ) const {
 	for (int i = 0; i < this->rows(); i++) {
 		for (int j = 0; j < this->columns(); j++) {
 			result.m[0][j] += this->m[i][j];
+		}
+	}
+	return (result);
+}
+
+Matrix	Matrix::sum_rows( void ) const {
+	Matrix result(this->rows(), 1);
+	for (int i = 0; i < this->rows(); i++) {
+		for (int j = 0; j < this->columns(); j++) {
+			result.m[i][0] += this->m[i][j];
 		}
 	}
 	return (result);
@@ -242,14 +293,18 @@ double	Matrix::mean( void ) const {
 	return (sum_value / (this->rows() * this->columns()));
 }
 
-Matrix	Matrix::abs( void ) const {
-	Matrix	abs_matrix(*this);
+Matrix	Matrix::argmax( void ) const {
+	Matrix result(*this);
 	for (int i = 0; i < this->rows(); i++) {
+		int	max = 0;
 		for (int j = 0; j < this->columns(); j++) {
-			abs_matrix.m[i][j] = std::abs(this->m[i][j]);
+			if (this->m[i][j] > this->m[i][max])
+				max = j;
+			result.m[i][j] = 0;
 		}
+		result.m[i][max] = 1;
 	}
-	return (abs_matrix);
+	return (result);
 }
 
 Matrix	Matrix::normalize( double min, double max ) const {
@@ -292,6 +347,19 @@ double	Matrix::max() const {
 		}
 	}
 	return (maximum);
+}
+
+Matrix	Matrix::row_max() const {
+	Matrix	result(this->rows(), 1);
+	for (int i = 0; i < this->rows(); i++) {
+		double	maximum = std::numeric_limits<double>::min();
+		for (int j = 0; j < this->columns(); j++) {
+			if (this->m[i][j] > maximum)
+				maximum = this->m[i][j];
+		}
+		result.m[i][0] = maximum;
+	}
+	return (result);
 }
 
 std::ostream& operator<<(std::ostream& os, const Matrix& matrix) {
