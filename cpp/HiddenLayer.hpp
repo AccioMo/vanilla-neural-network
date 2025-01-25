@@ -9,6 +9,7 @@ class HiddenLayer: public NetworkLayer {
 		const int	_index;
 
 	public:
+		HiddenLayer( void );
 		HiddenLayer( int index, int input_size, int output_size );
 		HiddenLayer( const HiddenLayer &og );
 		HiddenLayer	&operator=( const HiddenLayer &og );

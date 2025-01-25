@@ -55,6 +55,8 @@ class NetworkLayer {
 		delta from backpropagation function */
 		void	update( const Matrix &prev_outputs, double learning_rate );
 
+		int 	getSize( void ) const;
+		void    setSize( int new_size );
 		Matrix  getWeights( void ) const;
 		void    setWeights( const Matrix &new_weights );
 		Matrix  getBiases( void ) const;

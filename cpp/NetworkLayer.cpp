@@ -3,7 +3,7 @@
 
 NetworkLayer::NetworkLayer( int input_size, int output_size )
 	: _type("none"),
-	_neurons(input_size),
+	_neurons(output_size),
 	_weights(Matrix(input_size, output_size, \
 		xavier_glorot_init(input_size, output_size))),
 	_biases(Matrix(1, output_size, 0.1))
@@ -28,19 +28,27 @@ NetworkLayer	&NetworkLayer::operator=( const NetworkLayer &og ) {
 	return (*this);
 }
 
+void	NetworkLayer::update( const Matrix &prev_outputs, double learning_rate ) {
+	this->_weights = this->_weights - ((prev_outputs.transpose() * this->_deltas) * learning_rate);
+	this->_biases = this->_biases - (this->_deltas.sum_columns() * learning_rate);
+}
+
 NetworkLayer::~NetworkLayer() { }
 
 Matrix  NetworkLayer::getWeights( void ) const {
     return (this->_weights);
 }
 
-void	NetworkLayer::update( const Matrix &prev_outputs, double learning_rate ) {
-	this->_weights = this->_weights - ((prev_outputs.transpose() * this->_deltas) * learning_rate);
-	this->_biases = this->_biases - (this->_deltas.sum_columns() * learning_rate);
-}
-
 void    NetworkLayer::setWeights( const Matrix &new_weights ) {
 	this->_weights = new_weights;
+}
+
+int  NetworkLayer::getSize( void ) const {
+    return (this->_neurons);
+}
+
+void    NetworkLayer::setSize( int new_size ) {
+	this->_neurons = new_size;
 }
 
 Matrix  NetworkLayer::getBiases( void ) const {

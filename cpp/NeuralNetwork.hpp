@@ -4,9 +4,12 @@
 
 # include <iostream>
 # include <fstream>
+# include <cstring>
 
 # include "HiddenLayer.hpp"
 # include "OutputLayer.hpp"
+# include "config.hpp"
+# include "math.hpp"
 
 class NeuralNetwork {
 	private:
@@ -22,6 +25,7 @@ class NeuralNetwork {
 		/* `nodes` is an array of size `size` (hehe). It should contain 
 		the size - aka. num of nodes (neurons) - of each layer. */
 		NeuralNetwork( int size, int *nodes, double learning_rate );
+		NeuralNetwork( const char *filename );
 		NeuralNetwork( const NeuralNetwork &og );
 		NeuralNetwork	&operator=( const NeuralNetwork &og );
 		~NeuralNetwork( );
@@ -41,8 +45,12 @@ class NeuralNetwork {
 		/* ... testing ... */
 		Matrix	test( const Matrix input );
 
+		/* ... printing ... */
+		void	printData( const Matrix expected_outputs ) const;
+
 		/* ... saving ... */
 		void	saveConfigJson(const char *filename) const;
+		void	saveConfigBin(const char *filename) const;
 
 		/* ... evaluation ... */
 		Matrix	calculateEntropy( void ) const;
@@ -51,10 +59,12 @@ class NeuralNetwork {
 		/* ... getters ... */
 		Matrix	getEntropy( void ) const;
 		Matrix	getConfidence( void ) const;
+		double	getLearningRate( void ) const;
 
 		/* ... setters ... */
-		void	setEntropy( Matrix entropy  );
-		void	setConfidence( Matrix confidence  );
+		void	setEntropy( Matrix entropy );
+		void	setConfidence( Matrix confidence );
+		void	setLearningRate( double learning_rate );
 };
 
 #endif

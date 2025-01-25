@@ -11,6 +11,16 @@ Matrix	ReLU( const Matrix &input ) {
 	return (output);
 }
 
+Matrix	ReLU_derivative( const Matrix &input ) {
+	Matrix	output = input;
+	for (auto &row : output.m) {
+		for (auto &element : row) {
+			element = element > 0;
+		}
+	}
+	return (output);
+}
+
 Matrix	sigmoid( const Matrix &input ) {
 	Matrix	output = input;
 	for (auto &row : output.m) {
@@ -73,4 +83,31 @@ Matrix	sigmoid_derivative( const Matrix &input ) {
 
 double	xavier_glorot_init(int fan_in, int fan_out) {
 	return (4.0 * sqrt(6.0 / (double)(fan_in + fan_out)));
+}
+
+std::vector<unsigned char> read_binary_file(const char *filename, size_t size) {
+    std::ifstream file(filename, std::ios::binary);
+    
+    if (file.is_open()) {
+   		std::vector<unsigned char> data(size);
+        file.read(reinterpret_cast<char *>(data.data()), size);
+        file.close();
+	    return data;
+    } else {
+        std::cerr << "Error opening file: " << filename << std::endl;
+    }
+
+	std::vector<unsigned char> none;
+    return none;
+}
+
+std::streamsize get_file_size(const char *filename) {
+    std::ifstream file(filename, std::ios::binary | std::ios::ate);
+    if (file.is_open()) {
+        std::streamsize size = file.tellg();
+        file.close();
+        return size;
+    } else {
+        throw std::runtime_error("Unable to open file");
+    }
 }

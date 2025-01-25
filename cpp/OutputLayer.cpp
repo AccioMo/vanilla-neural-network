@@ -7,15 +7,13 @@ OutputLayer::OutputLayer( int input_size, int output_size )
 	_type = "output";
 }
 
+OutputLayer::OutputLayer( void )
+	: NetworkLayer(0, 0)
+{ }
+
 OutputLayer::OutputLayer( const OutputLayer &og )
 	: NetworkLayer(og)
 { }
-
-OutputLayer	&OutputLayer::operator=( const OutputLayer &og ) {
-	if (this == &og)
-		return *this;
-	return *this;
-}
 
 OutputLayer::~OutputLayer() { }
 

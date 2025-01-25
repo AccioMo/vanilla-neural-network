@@ -2,7 +2,7 @@ CLANG = g++
 FLAGS = -Wall -Wextra -Werror -Wshadow -std=c++11
 DEBUG_FLAGS = -g -fsanitize=address
 OPTIMIZATION_FLAGS = -O3
-HEADERS = Matrix.hpp NetworkLayer.hpp NeuralNetwork.hpp HiddenLayer.hpp OutputLayer.hpp math.hpp
+HEADERS = Matrix.hpp NetworkLayer.hpp NeuralNetwork.hpp HiddenLayer.hpp OutputLayer.hpp math.hpp config.hpp
 FILES = main.cpp Matrix.cpp NetworkLayer.cpp NeuralNetwork.cpp HiddenLayer.cpp OutputLayer.cpp math.cpp
 OBJ_DIR = obj/
 OBJ_FILES = $(addprefix $(OBJ_DIR), $(FILES:.cpp=.opp))

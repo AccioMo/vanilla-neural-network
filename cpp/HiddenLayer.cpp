@@ -24,13 +24,13 @@ HiddenLayer::~HiddenLayer() { }
 
 Matrix	&HiddenLayer::feedforward( const Matrix &prev_outputs ) {
 	this->_outputs = (prev_outputs * this->_weights) + this->_biases;
-	this->_outputs = sigmoid(this->_outputs);
+	this->_outputs = ReLU(this->_outputs);
 	return (this->_outputs);
 }
 
 void	HiddenLayer::backpropagation( const NetworkLayer &next_layer ) {
 	this->_errors = next_layer.getDeltas() * next_layer.getWeights().transpose();
-	this->_deltas = this->_errors.hadamard_product(sigmoid_derivative(this->_outputs));
+	this->_deltas = this->_errors.hadamard_product(ReLU_derivative(this->_outputs));
 }
 
 int  HiddenLayer::getIndex( void ) const {

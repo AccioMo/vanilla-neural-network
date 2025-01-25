@@ -189,8 +189,8 @@ Matrix	Matrix::operator-( const Matrix &to_subtract ) const {
 
 Matrix	Matrix::operator*( const Matrix &mult ) const {
 	if (this->columns() != mult.rows()) {
-		if (this->rows() == mult.rows() && this->columns() == mult.columns())
-			return (this->hadamard_product(mult));
+		// if (this->rows() == mult.rows() && this->columns() == mult.columns())
+		// 	return (this->hadamard_product(mult));
 		throw std::invalid_argument("multiplication not possible: " + std::to_string(this->rows()) \
 			+ "x" + std::to_string(this->columns()) + " and " + std::to_string(mult.rows()) \
 			+ "x" + std::to_string(mult.columns()));
