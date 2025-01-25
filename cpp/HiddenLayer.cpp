@@ -23,8 +23,8 @@ HiddenLayer	&HiddenLayer::operator=( const HiddenLayer &og )
 HiddenLayer::~HiddenLayer() { }
 
 Matrix	&HiddenLayer::feedforward( const Matrix &prev_outputs ) {
-	this->_outputs = (prev_outputs * this->_weights) + this->_biases;
-	this->_outputs = ReLU(this->_outputs);
+	Matrix	logit = (prev_outputs * this->_weights) + this->_biases;
+	this->_outputs = ReLU(logit);
 	return (this->_outputs);
 }
 

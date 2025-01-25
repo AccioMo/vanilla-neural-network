@@ -70,10 +70,10 @@ std::vector<Matrix>	get_input_labels( const char *filename ) {
 int main( void )
 {
 
-	int	nodes[NETWORK_SIZE] = {IMAGE_SIZE, 128, 64, POSSIBILE_OUTPUTS};
-	NeuralNetwork	network(NETWORK_SIZE, (int *)nodes, LEARNING_RATE);
+	// int	nodes[NETWORK_SIZE] = {IMAGE_SIZE, 128, 64, POSSIBILE_OUTPUTS};
+	// NeuralNetwork	network(NETWORK_SIZE, (int *)nodes, LEARNING_RATE);
 
-	// NeuralNetwork	network("configs/60k-005-40i.bin");
+	NeuralNetwork	network("configs/60k-005-40i.bin");
 
 	/* ------------------------------------------------------------------------------------------------ */
 
@@ -107,8 +107,8 @@ int main( void )
 
 	std::cout << "   --- TRAINING RESULTS ---" << std::endl;
 
-	network.saveConfigJson("configs/60k-005-20i.json");
-	network.saveConfigBin("configs/60k-005-20i.bin");
+	network.saveConfigJson("configs/60k-005-60i.json");
+	network.saveConfigBin("configs/60k-005-60i.bin");
 
 	std::vector<unsigned char> mnist_test_images = read_binary_file("mnist/mnist_test_images.bin", IMAGE_SIZE * TEST_SIZE);
 
