@@ -69,14 +69,16 @@ std::vector<Matrix>	get_input_labels( const char *filename ) {
 
 int main( void )
 {
-
-	// int	nodes[NETWORK_SIZE] = {IMAGE_SIZE, 128, 64, POSSIBILE_OUTPUTS};
-	// NeuralNetwork	network(NETWORK_SIZE, (int *)nodes, LEARNING_RATE);
+	/*
+	int	nodes[NETWORK_SIZE] = {IMAGE_SIZE, 128, 64, POSSIBILE_OUTPUTS};
+	NeuralNetwork	network(NETWORK_SIZE, (int *)nodes, LEARNING_RATE);
+	*/
 
 	NeuralNetwork	network("configs/60k-005-40i.bin");
 
-	/* ------------------------------------------------------------------------------------------------ */
+	/* --------------------------------------------- training --------------------------------------------- */
 
+	/*
 	std::cout << "Allocating space for network..." << std::endl;
 
 	std::vector<Matrix>	inputs = get_input_batch("mnist/mnist_train_images.bin");
@@ -109,47 +111,25 @@ int main( void )
 
 	network.saveConfigJson("configs/60k-005-60i.json");
 	network.saveConfigBin("configs/60k-005-60i.bin");
+	*/
 
-	std::vector<unsigned char> mnist_test_images = read_binary_file("mnist/mnist_test_images.bin", IMAGE_SIZE * TEST_SIZE);
+	/* --------------------------------------------- testing --------------------------------------------- */
 
-	Matrix	testing_batch_input(TEST_SIZE, IMAGE_SIZE);
+	std::vector<Matrix>	t_inputs = get_input_batch("mnist/mnist_test_images.bin");
 
-	for (int i = 0; i < TEST_SIZE; i++) {
-		for (int j = 0; j < IMAGE_SIZE; j++) {
-			testing_batch_input.m[i][j] = static_cast<double>(mnist_test_images[(i * IMAGE_SIZE) + j]);
-		}
-	}
-
-	std::vector<unsigned char> mnist_test_labels = read_binary_file("mnist/mnist_test_labels.bin", TEST_SIZE);
-
-	Matrix	testing_batch_output(TEST_SIZE, POSSIBILE_OUTPUTS);
-
-	for (int i = 0; i < TEST_SIZE; i++) {
-		for (int j = 0; j < POSSIBILE_OUTPUTS; j++) {
-			testing_batch_output.m[i][static_cast<int>(mnist_test_labels[i])] = 1.0;
-		}
-	}
-
-	Matrix	t_inputs = testing_batch_input.normalize(testing_batch_input.min(), testing_batch_input.max());
-	Matrix	t_outputs = testing_batch_output.normalize(testing_batch_output.min(), testing_batch_output.max());
-
-	Matrix result = network.test(t_inputs);
+	std::vector<Matrix>	t_outputs = get_input_labels("mnist/mnist_test_labels.bin");
 
 	std::cout << "   --- TESTING ---" << std::endl;
-	std::cout << result << std::endl;
-	int	choices[POSSIBILE_OUTPUTS] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
-	for (int k = 0; k < TEST_SIZE; k++) {
-		double d = 0.0;
-		for (int i = 0; i < POSSIBILE_OUTPUTS; i++) {
-			d += result.m[k][i];
-			std::cout << choices[i] << std::fixed << std::setprecision(2);
-			std::cout << " : " << result.m[k][i] * 100.0 << "% certainty";
-			if (t_outputs.m[k][i] == 1)
-				std::cout << " (correct)";
-			std::cout << std::endl;
-		}
-		std::cout << "d: " << d << std::endl;
-		std::cout << "	---  " << std::endl;
+
+	int	total_iterations = TEST_SIZE / BATCH_SIZE;
+	for (int i = 0; i < total_iterations; i++) {
+		std::cout << "Iteration " << i + 1 << " of " << total_iterations << std::endl;
+		Matrix	normalized_inputs = t_inputs[i].normalize(INPUT_MIN, INPUT_MAX);
+		Matrix	normalized_outputs = t_outputs[i].normalize(OUTPUT_MIN, OUTPUT_MAX);
+		network.feedforward(normalized_inputs);
+		network.backpropagation(normalized_outputs);
+		network.printData(normalized_outputs);
+		std::cout << "   ---	" << std::endl;
 	}
 
     return (0);
