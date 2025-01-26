@@ -69,16 +69,18 @@ std::vector<Matrix>	get_input_labels( const char *filename ) {
 
 int main( void )
 {
-	/*
-	int	nodes[NETWORK_SIZE] = {IMAGE_SIZE, 128, 64, POSSIBILE_OUTPUTS};
+	
+	int	nodes[NETWORK_SIZE] = {IMAGE_SIZE, 128, POSSIBILE_OUTPUTS};
 	NeuralNetwork	network(NETWORK_SIZE, (int *)nodes, LEARNING_RATE);
-	*/
+	
 
+	/* 
 	NeuralNetwork	network("configs/60k-005-40i.bin");
+	*/
 
 	/* --------------------------------------------- training --------------------------------------------- */
 
-	/*
+	
 	std::cout << "Allocating space for network..." << std::endl;
 
 	std::vector<Matrix>	inputs = get_input_batch("mnist/mnist_train_images.bin");
@@ -96,8 +98,6 @@ int main( void )
 		Matrix	normalized_outputs = outputs[i].normalize(OUTPUT_MIN, OUTPUT_MAX);
 		network.training(normalized_inputs, normalized_outputs, EPOCHS);
 		network.printData(normalized_outputs);
-		std::cout << network.output_layer.getWeights() << std::endl;
-		std::cout << network.output_layer.getOutputs() << std::endl;
 		std::cout << "   ---	" << std::endl;
 	}
 
@@ -109,21 +109,20 @@ int main( void )
 
 	std::cout << "   --- TRAINING RESULTS ---" << std::endl;
 
-	network.saveConfigJson("configs/60k-005-60i.json");
-	network.saveConfigBin("configs/60k-005-60i.bin");
-	*/
+	network.saveConfigJson("configs/60k-005-5i.json");
+	network.saveConfigBin("configs/60k-005-5i.bin");
+	
 
 	/* --------------------------------------------- testing --------------------------------------------- */
 
 	std::vector<Matrix>	t_inputs = get_input_batch("mnist/mnist_test_images.bin");
 
 	std::vector<Matrix>	t_outputs = get_input_labels("mnist/mnist_test_labels.bin");
-
 	std::cout << "   --- TESTING ---" << std::endl;
 
-	int	total_iterations = TEST_SIZE / BATCH_SIZE;
-	for (int i = 0; i < total_iterations; i++) {
-		std::cout << "Iteration " << i + 1 << " of " << total_iterations << std::endl;
+	int	test_iterations = TEST_SIZE / BATCH_SIZE;
+	for (int i = 0; i < test_iterations; i++) {
+		std::cout << "Iteration " << i + 1 << " of " << test_iterations << std::endl;
 		Matrix	normalized_inputs = t_inputs[i].normalize(INPUT_MIN, INPUT_MAX);
 		Matrix	normalized_outputs = t_outputs[i].normalize(OUTPUT_MIN, OUTPUT_MAX);
 		network.feedforward(normalized_inputs);

@@ -29,7 +29,8 @@ NetworkLayer	&NetworkLayer::operator=( const NetworkLayer &og ) {
 }
 
 void	NetworkLayer::update( const Matrix &prev_outputs, double learning_rate ) {
-	this->_weights = this->_weights - ((prev_outputs.transpose() * this->_deltas) * learning_rate);
+	Matrix	weight_gradient = prev_outputs.transpose() * this->_deltas;
+	this->_weights = this->_weights - (weight_gradient * learning_rate);
 	this->_biases = this->_biases - (this->_deltas.sum_columns() * learning_rate);
 }
 
