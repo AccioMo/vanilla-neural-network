@@ -8,8 +8,10 @@
 
 # include "HiddenLayer.hpp"
 # include "OutputLayer.hpp"
+# include "Matrix.hpp"
 # include "config.hpp"
 # include "math.hpp"
+# include "utils.hpp"
 
 class NeuralNetwork {
 	private:
@@ -24,6 +26,7 @@ class NeuralNetwork {
 
 		/* `nodes` is an array of size `size` (hehe). It should contain 
 		the size - aka. num of nodes (neurons) - of each layer. */
+		NeuralNetwork( );
 		NeuralNetwork( int size, int *nodes, double learning_rate );
 		NeuralNetwork( const char *filename );
 		NeuralNetwork( const NeuralNetwork &og );
@@ -40,10 +43,15 @@ class NeuralNetwork {
 		void	update( const Matrix &inputs );
 
 		/* ... training ... */
-		void	training( Matrix input_batch, Matrix output_batch, int epochs );
+		void	train( Matrix input_batch, Matrix output_batch, int epochs );
+		void	trainOnFile( const char *filename, const char *labels );
 
 		/* ... testing ... */
-		Matrix	test( const Matrix input );
+		void	test( const Matrix input, const Matrix expected_outputs );
+		void	testOnFile( const char *filename, const char *labels );
+
+		Matrix	run( const Matrix input );
+		Matrix	runOnImage( const char *filename );
 
 		/* ... printing ... */
 		void	printData( const Matrix expected_outputs ) const;

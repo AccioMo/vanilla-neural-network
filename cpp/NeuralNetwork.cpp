@@ -1,6 +1,14 @@
 
 #include "NeuralNetwork.hpp"
 
+# define STB_IMAGE_IMPLEMENTATION
+# include "stb_image.h"
+
+NeuralNetwork::NeuralNetwork( void ) {
+	this->_size = 0;
+	this->_learning_rate = 0.0;
+}
+
 NeuralNetwork::NeuralNetwork( int size, int *nodes, double learning_rate )
 	: _size(size),
 	_learning_rate(learning_rate),
@@ -23,20 +31,11 @@ NeuralNetwork::NeuralNetwork( const char *filename ) {
 	std::memcpy(&this->_learning_rate, &mnist_train_images[i], sizeof(double));
 	i += sizeof(double);
 
-	std::cout << "size: " << this->_size << std::endl;
-	std::cout << "learning_rate: " << this->_learning_rate << std::endl;
-
 	int	*config_nodes = new int[this->_size];
 	for (int j = 0; j < this->_size; j++) {
 		std::memcpy(&config_nodes[j], &mnist_train_images[i], sizeof(int));
 		i += sizeof(int);
 	}
-
-	std::cout << "config_nodes: ";
-	for (int j = 0; j < this->_size; j++) {
-		std::cout << config_nodes[j] << " ";
-	}
-	std::cout << std::endl;
 
 	for (int k = 0; k < this->_size - 2; k++) {
 
@@ -131,7 +130,7 @@ void	NeuralNetwork::update( const Matrix &inputs ) {
 	output_layer.update(outputs, this->_learning_rate);
 }
 
-void	NeuralNetwork::training( Matrix input_batch, Matrix output_batch, int epochs ) {
+void	NeuralNetwork::train( Matrix input_batch, Matrix output_batch, int epochs ) {
 	std::cout << std::endl << std::endl;
 	for (int age = 0; age < epochs; age++) {
 		std::cout << "\033[A\033[A\r\033[Kepochs	: " << age << std::endl;
@@ -142,9 +141,93 @@ void	NeuralNetwork::training( Matrix input_batch, Matrix output_batch, int epoch
 	}
 }
 
-Matrix	NeuralNetwork::test( const Matrix input ) {
+void	NeuralNetwork::trainOnFile( const char *filename, const char *labels ) {
+
+	std::vector<Matrix>	inputs = get_input_batch(filename);
+	std::vector<Matrix>	outputs = get_input_labels(labels);
+
+	std::cout << "Network constructed!" << std::endl;
+
+	double start = ft_get_time();
+	std::cout << std::endl << "   --- TRAINING ---	" << std::endl;
+	int	total_iterations = TRAIN_SIZE / BATCH_SIZE;
+	for (int i = 0; i < total_iterations; i++) {
+		std::cout << "Iteration " << i + 1 << " of " << total_iterations << std::endl;
+		Matrix	normalized_inputs = inputs[i].normalize(INPUT_MIN, INPUT_MAX);
+		Matrix	normalized_outputs = outputs[i].normalize(OUTPUT_MIN, OUTPUT_MAX);
+		this->train(normalized_inputs, normalized_outputs, EPOCHS);
+		this->printData(normalized_outputs);
+		std::cout << "   ---	" << std::endl;
+	}
+
+	std::cout << "Training done!" << std::endl << std::endl;
+	std::cout << "time		: " << (ft_get_time() - start) / 1000 << "s" << std::endl;
+	std::cout << "   ---	" << std::endl;
+
+	std::cout << std::endl;
+
+	std::cout << "   --- TRAINING RESULTS ---" << std::endl;
+
+}
+
+void	NeuralNetwork::test( const Matrix input, const Matrix expected_outputs ) {
 	this->feedforward(input);
+	this->printData(expected_outputs);
+}
+
+void	NeuralNetwork::testOnFile( const char *filename, const char *labels ) {
+
+	std::vector<Matrix>	t_inputs = get_input_batch(filename);
+	std::vector<Matrix>	t_outputs = get_input_labels(labels);
+
+	std::cout << "   --- TESTING ---" << std::endl;
+
+	int	test_iterations = TEST_SIZE / BATCH_SIZE;
+	for (int i = 0; i < test_iterations; i++) {
+		std::cout << "Iteration " << i + 1 << " of " << test_iterations << std::endl;
+		Matrix	normalized_inputs = t_inputs[i].normalize(INPUT_MIN, INPUT_MAX);
+		Matrix	normalized_outputs = t_outputs[i].normalize(OUTPUT_MIN, OUTPUT_MAX);
+		this->feedforward(normalized_inputs);
+		this->backpropagation(normalized_outputs);
+		this->printData(normalized_outputs);
+		std::cout << "   ---	" << std::endl;
+	}
+}
+
+Matrix	NeuralNetwork::run( const Matrix input ) {
+	Matrix	normalized_input = input.normalize(INPUT_MIN, INPUT_MAX);
+
+	this->feedforward(normalized_input);
+
+	int	possible_outputs[10] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+	for (int i = 0; i < POSSIBILE_OUTPUTS; i++) {
+		std::cout << possible_outputs[i] << ": " << std::fixed << std::setprecision(2) << this->output_layer.getOutputs().m[0][i] * 100 << "%" << std::endl;
+	}
 	return (this->output_layer.getOutputs());
+}
+
+Matrix	NeuralNetwork::runOnImage( const char *filename ) {
+	int	width, height, channels;
+
+	unsigned char	*image = stbi_load(filename, &width, &height, &channels, 1);
+	if (image == NULL) {
+		std::cerr << "Error loading image" << std::endl;
+		return (Matrix());
+	}
+	if (width != 28 || height != 28) {
+		std::cerr << "Image must be 28x28" << std::endl;
+		return (Matrix());
+	}
+
+	Matrix	input(1, IMAGE_SIZE);
+	for (int j = 0; j < IMAGE_SIZE; j++) {
+		input.m[0][j] = static_cast<double>(255 - image[j]);
+	}
+	
+	Matrix	output = this->run(input);
+
+	stbi_image_free(image);
+	return (output);
 }
 
 void	NeuralNetwork::saveConfigJson( const char *filename ) const {

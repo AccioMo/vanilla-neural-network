@@ -3,9 +3,9 @@
 # define CONFIG_HPP
 
 const int NETWORK_SIZE = 3;
-const double LEARNING_RATE = 0.001;
+const double LEARNING_RATE = 0.01;
 
-const int EPOCHS = 5;
+const int EPOCHS = 20;
 const int IMAGE_SIZE = 28 * 28;
 const int POSSIBILE_OUTPUTS = 10;
 
