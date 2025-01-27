@@ -141,7 +141,7 @@ void	NeuralNetwork::train( Matrix input_batch, Matrix output_batch, int epochs )
 	}
 }
 
-void	NeuralNetwork::trainOnFile( const char *filename, const char *labels ) {
+void	NeuralNetwork::trainOnFile( const char *filename, const char *labels, const char *output_file ) {
 
 	std::vector<Matrix>	inputs = get_input_batch(filename);
 	std::vector<Matrix>	outputs = get_input_labels(labels);
@@ -164,10 +164,9 @@ void	NeuralNetwork::trainOnFile( const char *filename, const char *labels ) {
 	std::cout << "time		: " << (ft_get_time() - start) / 1000 << "s" << std::endl;
 	std::cout << "   ---	" << std::endl;
 
-	std::cout << std::endl;
+	this->saveConfigBin(output_file);
 
-	std::cout << "   --- TRAINING RESULTS ---" << std::endl;
-
+	std::cout << "Network saved!" << std::endl;
 }
 
 void	NeuralNetwork::test( const Matrix input, const Matrix expected_outputs ) {

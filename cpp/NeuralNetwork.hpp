@@ -44,7 +44,7 @@ class NeuralNetwork {
 
 		/* ... training ... */
 		void	train( Matrix input_batch, Matrix output_batch, int epochs );
-		void	trainOnFile( const char *filename, const char *labels );
+		void	trainOnFile( const char *filename, const char *labels, const char *output_file );
 
 		/* ... testing ... */
 		void	test( const Matrix input, const Matrix expected_outputs );

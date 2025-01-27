@@ -10,8 +10,10 @@ int main( int ac, char **av )
 
 	if (ac > 1)
 		network.runOnImage(av[1]);
-	else
-		std::cerr << "usage: ./NeuralNetwork <image_path>" << std::endl;
+	else {
+		network.trainOnFile("mnist/mnist_train_images.bin", "mnist/mnist_train_labels.bin", "configs/60k-005-120i.bin");
+		// std::cerr << "usage: ./NeuralNetwork <image_path>" << std::endl;
+	}
 
     return (0);
 }
