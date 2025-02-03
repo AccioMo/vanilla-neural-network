@@ -1,6 +1,6 @@
 {
 "size": 4,
-"learning_rate": 0.0001, 
+"learning_rate": 0.0001,
 "layers": [784, 128, 64, 10], 
 "hidden_layers": [
 {
