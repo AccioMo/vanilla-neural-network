@@ -11,8 +11,6 @@ class HiddenLayer: public NetworkLayer {
 	public:
 		HiddenLayer( void );
 		HiddenLayer( int index, int input_size, int output_size );
-		HiddenLayer( const HiddenLayer &og );
-		HiddenLayer	&operator=( const HiddenLayer &og );
 		~HiddenLayer() override;
 
 		Matrix	&feedforward( const Matrix &prev_outputs ) override;

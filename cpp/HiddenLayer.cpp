@@ -8,18 +8,6 @@ HiddenLayer::HiddenLayer( int index, int input_size, int output_size )
 	this->_type = "hidden";
 }
 
-HiddenLayer::HiddenLayer( const HiddenLayer &og )
-	: NetworkLayer(og),
-	_index(og._index)
-{ }
-
-HiddenLayer	&HiddenLayer::operator=( const HiddenLayer &og )
-{
-	if (this == &og)
-		return *this;
-	return *this;
-}
-
 HiddenLayer::~HiddenLayer() { }
 
 Matrix	&HiddenLayer::feedforward( const Matrix &prev_outputs ) {

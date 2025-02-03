@@ -11,10 +11,6 @@ OutputLayer::OutputLayer( void )
 	: NetworkLayer(0, 0)
 { }
 
-OutputLayer::OutputLayer( const OutputLayer &og )
-	: NetworkLayer(og)
-{ }
-
 OutputLayer::~OutputLayer() { }
 
 Matrix	&OutputLayer::feedforward( const Matrix &prev_outputs ) {

@@ -29,8 +29,6 @@ class NeuralNetwork {
 		NeuralNetwork( );
 		NeuralNetwork( int size, int *nodes, double learning_rate );
 		NeuralNetwork( const char *filename );
-		NeuralNetwork( const NeuralNetwork &og );
-		NeuralNetwork	&operator=( const NeuralNetwork &og );
 		~NeuralNetwork( );
 
 		/* ... feedforward ... */

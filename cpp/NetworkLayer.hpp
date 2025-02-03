@@ -40,8 +40,6 @@ class NetworkLayer {
 
 	public:
 		NetworkLayer( int input_size, int output_size );
-		NetworkLayer( const NetworkLayer &og );
-		NetworkLayer	&operator=( const NetworkLayer &og );
 		virtual	~NetworkLayer();
 
 		/* feeds output of the previous layer 

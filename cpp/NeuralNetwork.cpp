@@ -87,21 +87,6 @@ NeuralNetwork::NeuralNetwork( const char *filename ) {
 	this->output_layer = new_output_layer;
 }
 
-NeuralNetwork::NeuralNetwork( const NeuralNetwork &og )
-	: _size(og._size),
-	_learning_rate(og._learning_rate),
-	output_layer(og.output_layer),
-	hidden_layers(og.hidden_layers)
-{ }
-
-NeuralNetwork	&NeuralNetwork::operator=( const NeuralNetwork &og ) {
-	this->_size = og._size;
-	this->_learning_rate = og._learning_rate;
-	this->output_layer = og.output_layer;
-	this->hidden_layers = og.hidden_layers;
-	return (*this);
-}
-
 NeuralNetwork::~NeuralNetwork() { }
 
 void	NeuralNetwork::feedforward( const Matrix &inputs ) {

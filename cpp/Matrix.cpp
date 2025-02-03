@@ -39,12 +39,6 @@ Matrix::Matrix( int rows, int columns, double rand_range ) {
 	}
 }
 
-Matrix::Matrix( const Matrix &og ) {
-	this->_rows = og._rows;
-	this->_columns = og._columns;
-	this->m = og.m;
-}
-
 Matrix::~Matrix() { }
 
 
@@ -74,13 +68,6 @@ Matrix	Matrix::repeat_rows( int rows ) const {
 		}
 	}
 	return matrix;
-}
-
-Matrix	&Matrix::operator=( const Matrix &og ) {
-	this->_rows = og._rows;
-	this->_columns = og._columns;
-	this->m = og.m;
-	return (*this);
 }
 
 Matrix	Matrix::operator+( const Matrix &to_add ) const {

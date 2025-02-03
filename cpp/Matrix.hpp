@@ -20,8 +20,6 @@ class Matrix {
 		Matrix( t_vec array );
 		Matrix( int rows, int columns );
 		Matrix( int rows, int columns, double rand_range );
-		Matrix	&operator=( const Matrix &og );
-		Matrix( const Matrix &og );
 		~Matrix();
 
 		int	rows( void ) const;

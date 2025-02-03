@@ -9,25 +9,6 @@ NetworkLayer::NetworkLayer( int input_size, int output_size )
 	_biases(Matrix(1, output_size, 0.1))
 { }
 
-NetworkLayer::NetworkLayer( const NetworkLayer &og )
-	: _type(og._type),
-	_neurons(og._neurons),
-	_weights(og._weights),
-	_biases(og._biases)
-{ }
-
-NetworkLayer	&NetworkLayer::operator=( const NetworkLayer &og ) {
-	this->_type = og._type;
-	this->_neurons = og._neurons;
-	this->_weights = og._weights;
-	this->_biases = og._biases;
-
-	this->_outputs = og._outputs;
-	this->_errors = og._errors;
-	this->_deltas = og._deltas;
-	return (*this);
-}
-
 void	NetworkLayer::update( const Matrix &prev_outputs, double learning_rate ) {
 	Matrix	weight_gradient = prev_outputs.transpose() * this->_deltas;
 	this->_weights = this->_weights - (weight_gradient * learning_rate);
