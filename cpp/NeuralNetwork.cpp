@@ -220,7 +220,10 @@ Matrix	NeuralNetwork::runOnImage( const char *filename ) {
 
 	Matrix	input(1, IMAGE_SIZE);
 	for (int j = 0; j < IMAGE_SIZE; j++) {
-		input.m[0][j] = static_cast<double>(255 - image[j]);
+		if (image[j] > 255 * 0.85) 
+			input.m[0][j] = 0.0;
+		else
+			input.m[0][j] = static_cast<double>(255 - image[j]);
 	}
 	
 	Matrix	output = this->run(input);
