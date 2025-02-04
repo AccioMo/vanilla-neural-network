@@ -16,13 +16,13 @@
 class NeuralNetwork {
 	private:
 		int		_size;
-		double	_learning_rate;
 		Matrix	_entropy;
 		Matrix	_confidence;
 
-		double	_l2_lambda = 0.0001;
-		double	_beta1 = 0.9;
-		double	_beta2 = 0.999;
+		double	_learning_rate;
+		double	_l2_lambda;
+		double	_beta1;
+		double	_beta2;
 
 	public:
 		OutputLayer					output_layer;
@@ -31,7 +31,13 @@ class NeuralNetwork {
 		/* `nodes` is an array of size `size` (hehe). It should contain 
 		the size - aka. num of nodes (neurons) - of each layer. */
 		NeuralNetwork( );
-		NeuralNetwork( int size, int *nodes );
+		NeuralNetwork( int size, 
+					int *nodes, 
+					double learning_rate = 0.01,
+					double l2_lambda = 0.0001,
+					double beta1 = 0.9,
+					double beta2 = 0.999 );
+
 		NeuralNetwork( const char *filename );
 		~NeuralNetwork( );
 

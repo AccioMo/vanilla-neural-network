@@ -6,12 +6,19 @@
 
 NeuralNetwork::NeuralNetwork( void ) {
 	this->_size = 0;
-	this->_learning_rate = LEARNING_RATE;
 }
 
-NeuralNetwork::NeuralNetwork( int size, int *nodes )
+NeuralNetwork::NeuralNetwork( int size,
+							int *nodes,
+							double learning_rate,
+							double l2_lambda,
+							double beta1,
+							double beta2 )
 	: _size(size),
-	_learning_rate(LEARNING_RATE),
+	_learning_rate(learning_rate),
+	_l2_lambda(l2_lambda),
+	_beta1(beta1),
+	_beta2(beta2),
 	output_layer(OutputLayer(nodes[size - 2], nodes[size - 1])) {
 	this->hidden_layers.reserve(size - 2);
 	for (int i = 0; i < size - 2; i++) {
@@ -55,7 +62,7 @@ NeuralNetwork::NeuralNetwork( const char *filename ) {
 			i += sizeof(double);
 		}
 
-		HiddenLayer	hidden_layer(k, 0, 0);
+		HiddenLayer	hidden_layer(k, config_nodes[k], neurons);
 		hidden_layer.setWeights(weights);
 		hidden_layer.setBiases(biases);
 		hidden_layer.setSize(neurons);
