@@ -6,12 +6,12 @@
 
 NeuralNetwork::NeuralNetwork( void ) {
 	this->_size = 0;
-	this->_learning_rate = 0.0;
+	this->_learning_rate = LEARNING_RATE;
 }
 
-NeuralNetwork::NeuralNetwork( int size, int *nodes, double learning_rate )
+NeuralNetwork::NeuralNetwork( int size, int *nodes )
 	: _size(size),
-	_learning_rate(learning_rate),
+	_learning_rate(LEARNING_RATE),
 	output_layer(OutputLayer(nodes[size - 2], nodes[size - 1])) {
 	this->hidden_layers.reserve(size - 2);
 	for (int i = 0; i < size - 2; i++) {
@@ -118,12 +118,13 @@ void	NeuralNetwork::update( const Matrix &inputs ) {
 void	NeuralNetwork::train( Matrix input_batch, Matrix output_batch, int epochs ) {
 	std::cout << std::endl << std::endl;
 	for (int age = 0; age < epochs; age++) {
-		std::cout << "\033[A\033[A\r\033[Kepochs	: " << age << std::endl;
+		std::cout << "\033[A\033[A\r\033[Kepochs\t\t: " << age << std::endl;
 		this->feedforward(input_batch);
 		this->backpropagation(output_batch);
 		this->update(input_batch);
-		std::cout << "accuracy	: " << std::fixed << std::setprecision(2) << this->calculateAccuracy(output_batch).mean() * 100.0 << "%" << std::endl;
+		std::cout << "accuracy\t: " << std::fixed << std::setprecision(2) << this->calculateAccuracy(output_batch).mean() * 100.0 << "%" << std::endl;
 	}
+	std::cout << "\033[A\033[A\r\033[K";
 }
 
 void	NeuralNetwork::trainOnFile( const char *filename, const char *labels, const char *output_file ) {

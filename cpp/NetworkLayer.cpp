@@ -9,8 +9,10 @@ NetworkLayer::NetworkLayer( int input_size, int output_size )
 	_biases(Matrix(1, output_size, 0.1))
 { }
 
-void	NetworkLayer::update( const Matrix &prev_outputs, double learning_rate ) {
-	Matrix	weight_gradient = prev_outputs.transpose() * this->_deltas;
+void	NetworkLayer::update( const Matrix &inputs, double learning_rate ) {
+	Matrix	weight_gradient = inputs.transpose() * this->_deltas;
+	weight_gradient = weight_gradient + (L2_LAMBDA_REGULARIZATION * sum(this->_weights));
+	
 	this->_weights = this->_weights - (weight_gradient * learning_rate);
 	this->_biases = this->_biases - (this->_deltas.sum_columns() * learning_rate);
 }

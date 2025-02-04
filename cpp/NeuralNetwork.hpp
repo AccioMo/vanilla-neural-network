@@ -20,6 +20,9 @@ class NeuralNetwork {
 		Matrix	_entropy;
 		Matrix	_confidence;
 
+		Matrix	_beta1;
+		Matrix	_beta2;
+
 	public:
 		OutputLayer					output_layer;
 		std::vector<HiddenLayer>	hidden_layers;
@@ -27,7 +30,7 @@ class NeuralNetwork {
 		/* `nodes` is an array of size `size` (hehe). It should contain 
 		the size - aka. num of nodes (neurons) - of each layer. */
 		NeuralNetwork( );
-		NeuralNetwork( int size, int *nodes, double learning_rate );
+		NeuralNetwork( int size, int *nodes );
 		NeuralNetwork( const char *filename );
 		~NeuralNetwork( );
 

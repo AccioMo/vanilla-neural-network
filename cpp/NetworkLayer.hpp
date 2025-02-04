@@ -5,6 +5,7 @@
 # include <iostream>
 # include "Matrix.hpp"
 # include "math.hpp"
+# include "config.hpp"
 
 class NetworkLayer {
 	protected:
@@ -37,6 +38,9 @@ class NetworkLayer {
 		calculated using the derivative of the activation 
 		function and the raw error value `_errors` */
 		Matrix		_deltas;
+
+		Matrix		_m;
+		Matrix		_v;
 
 	public:
 		NetworkLayer( int input_size, int output_size );
