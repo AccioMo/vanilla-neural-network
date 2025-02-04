@@ -240,6 +240,10 @@ Matrix	Matrix::hadamard_division( const Matrix &divide ) const {
 	return (result);
 }
 
+Matrix	Matrix::square( void ) const {
+	return (this->hadamard_product(*this));
+}
+
 Matrix	Matrix::sum_columns( void ) const {
 	Matrix result(1, this->columns());
 	for (int i = 0; i < this->rows(); i++) {
@@ -268,6 +272,16 @@ Matrix	Matrix::transpose( void ) const {
 		}
 	}
 	return (T);
+}
+
+Matrix	Matrix::sqrt( void ) const {
+	Matrix	result(this->rows(), this->columns());
+	for (int i = 0; i < this->rows(); i++) {
+		for (int j = 0; j < this->columns(); j++) {
+			result.m[i][j] = std::sqrt(this->m[i][j]);
+		}
+	}
+	return (result);
 }
 
 double	Matrix::mean( void ) const {

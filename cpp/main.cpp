@@ -6,8 +6,8 @@
 
 int main( int ac, char **av )
 {
-	// NeuralNetwork	network = NeuralNetwork(3, (int []){784, 128, 10});
-	NeuralNetwork	network = NeuralNetwork("configs/60k-004-20i.bin");
+	NeuralNetwork	network = NeuralNetwork(3, (int []){784, 128, 10});
+	// NeuralNetwork	network = NeuralNetwork("configs/60k-004-20i.bin");
 
 	if (ac > 1)
 		network.runOnImage(av[1]);

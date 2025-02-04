@@ -106,25 +106,27 @@ void	NeuralNetwork::backpropagation( const Matrix &expected_outputs ) {
 	}
 }
 
-void	NeuralNetwork::update( const Matrix &inputs ) {
+void	NeuralNetwork::update( const Matrix &inputs, int timestep ) {
 	Matrix	outputs = inputs;
 	for (auto &layer : hidden_layers) {
-		layer.update(outputs, this->_learning_rate);
+		layer.update(outputs, this->_learning_rate, timestep, \
+			this->_l2_lambda, this->_beta1, this->_beta2);
 		outputs = layer.getOutputs();
 	}
-	output_layer.update(outputs, this->_learning_rate);
+	output_layer.update(outputs, this->_learning_rate, timestep, \
+		this->_l2_lambda, this->_beta1, this->_beta2);
 }
 
-void	NeuralNetwork::train( Matrix input_batch, Matrix output_batch, int epochs ) {
-	std::cout << std::endl << std::endl;
+void	NeuralNetwork::train( Matrix input_batch, Matrix output_batch, int epochs, int timestep ) {
 	for (int age = 0; age < epochs; age++) {
-		std::cout << "\033[A\033[A\r\033[Kepochs\t\t: " << age << std::endl;
 		this->feedforward(input_batch);
 		this->backpropagation(output_batch);
-		this->update(input_batch);
-		std::cout << "accuracy\t: " << std::fixed << std::setprecision(2) << this->calculateAccuracy(output_batch).mean() * 100.0 << "%" << std::endl;
+		this->update(input_batch, timestep);
+		if (age == 0)
+			std::cout << "accuracy (start): " << std::fixed << std::setprecision(2) \
+				<< this->calculateAccuracy(output_batch).mean() * 100.0 << "%" << std::endl;
+		std::cout << "\033[2Kepochs\t\t: " << age << std::endl << "\033[A\r";
 	}
-	std::cout << "\033[A\033[A\r\033[K";
 }
 
 void	NeuralNetwork::trainOnFile( const char *filename, const char *labels, const char *output_file ) {
@@ -141,7 +143,7 @@ void	NeuralNetwork::trainOnFile( const char *filename, const char *labels, const
 		std::cout << "Iteration " << i + 1 << " of " << total_iterations << std::endl;
 		Matrix	normalized_inputs = inputs[i].normalize(INPUT_MIN, INPUT_MAX);
 		Matrix	normalized_outputs = outputs[i].normalize(OUTPUT_MIN, OUTPUT_MAX);
-		this->train(normalized_inputs, normalized_outputs, EPOCHS);
+		this->train(normalized_inputs, normalized_outputs, EPOCHS, i + 1);
 		this->printData(normalized_outputs);
 		std::cout << "   ---	" << std::endl;
 	}
@@ -292,9 +294,9 @@ void	NeuralNetwork::saveConfigBin(const char *filename) const {
 
 void	NeuralNetwork::printData( const Matrix expected_outputs ) const {
 	double max_entropy = -std::log(1.0 / (double)POSSIBILE_OUTPUTS);
-	std::cout << "entropy		: " << this->calculateEntropy().mean() << " (max " << max_entropy << ")" << std::endl;
-	std::cout << "accuracy	: " << this->calculateAccuracy(expected_outputs).mean() * 100 << "%" << std::endl;
-	std::cout << "confidence	: " << (1.0 - (this->calculateEntropy().mean() / max_entropy)) * 100 << "%" << std::endl;
+	std::cout << "accuracy (end)\t: " << this->calculateAccuracy(expected_outputs).mean() * 100 << "%" << std::endl;
+	std::cout << "entropy\t\t: " << this->calculateEntropy().mean() << " (max " << max_entropy << ")" << std::endl;
+	std::cout << "confidence\t: " << (1.0 - (this->calculateEntropy().mean() / max_entropy)) * 100 << "%" << std::endl;
 }
 
 Matrix	NeuralNetwork::calculateEntropy( void ) const {

@@ -6,14 +6,28 @@ NetworkLayer::NetworkLayer( int input_size, int output_size )
 	_neurons(output_size),
 	_weights(Matrix(input_size, output_size, \
 		xavier_glorot_init(input_size, output_size))),
-	_biases(Matrix(1, output_size, 0.1))
+	_biases(Matrix(1, output_size, 0.1)),
+	_m(Matrix(input_size, output_size, 0.0)),
+	_v(Matrix(input_size, output_size, 0.0))
 { }
 
-void	NetworkLayer::update( const Matrix &inputs, double learning_rate ) {
+void	NetworkLayer::update( const Matrix &inputs, 
+							  double learning_rate, 
+							  int timestep, 
+							  double l2_reg, 
+							  double beta1, 
+							  double beta2 ) {
 	Matrix	weight_gradient = inputs.transpose() * this->_deltas;
-	weight_gradient = weight_gradient + (L2_LAMBDA_REGULARIZATION * sum(this->_weights));
-	
-	this->_weights = this->_weights - (weight_gradient * learning_rate);
+	weight_gradient = weight_gradient + (this->_weights * l2_reg);
+
+	this->_m = this->_m * beta1 + weight_gradient * (1.0 - beta1);
+	this->_v = this->_v * beta2 + weight_gradient.square() * (1.0 - beta2);
+
+	Matrix	m_hat = this->_m / (1.0 - std::pow(beta1, timestep));
+	Matrix	v_hat = this->_v / (1.0 - std::pow(beta2, timestep));
+
+	this->_weights = this->_weights - (m_hat / v_hat.sqrt() + 1e-8) * learning_rate;
+
 	this->_biases = this->_biases - (this->_deltas.sum_columns() * learning_rate);
 }
 

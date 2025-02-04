@@ -46,7 +46,6 @@ class Matrix {
 		Matrix	operator-( const double scalar ) const;
 		Matrix	operator+( const double scalar ) const;
 
-
 		/* sums the matrix along its columns (collapsing rows) */
 		Matrix	sum_columns( void ) const;
 
@@ -65,6 +64,12 @@ class Matrix {
 
 		/* hadamard division. used in division overload */
 		Matrix	hadamard_division( const Matrix &divide ) const;
+
+		/* elementwise square */
+		Matrix	square( void ) const;
+
+		/* elementwise square root */
+		Matrix	sqrt( void ) const;
 
 		Matrix	argmax( void ) const;
 

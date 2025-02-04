@@ -20,8 +20,9 @@ class NeuralNetwork {
 		Matrix	_entropy;
 		Matrix	_confidence;
 
-		Matrix	_beta1;
-		Matrix	_beta2;
+		double	_l2_lambda = 0.0001;
+		double	_beta1 = 0.9;
+		double	_beta2 = 0.999;
 
 	public:
 		OutputLayer					output_layer;
@@ -41,10 +42,10 @@ class NeuralNetwork {
 		void	backpropagation( const Matrix &expected_outputs );
 
 		/* ... update ... */
-		void	update( const Matrix &inputs );
+		void	update( const Matrix &inputs, int timestep );
 
 		/* ... training ... */
-		void	train( Matrix input_batch, Matrix output_batch, int epochs );
+		void	train( Matrix input_batch, Matrix output_batch, int epochs, int timestep );
 		void	trainOnFile( const char *filename, const char *labels, const char *output_file );
 
 		/* ... testing ... */

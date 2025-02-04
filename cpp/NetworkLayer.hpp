@@ -55,7 +55,12 @@ class NetworkLayer {
 
 		/* updates weights and biases using 
 		delta from backpropagation function */
-		void	update( const Matrix &prev_outputs, double learning_rate );
+		void	update( const Matrix &prev_outputs, 
+						double learning_rate,
+						int    timestep,
+						double l2_reg = 0.0,
+						double beta1 = 0.9,
+						double beta2 = 0.999 );
 
 		int 	getSize( void ) const;
 		void    setSize( int new_size );
