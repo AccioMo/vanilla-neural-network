@@ -6,14 +6,38 @@
 
 int main( int ac, char **av )
 {
-	NeuralNetwork	network = NeuralNetwork(3, (int []){784, 128, 10});
-	// NeuralNetwork	network = NeuralNetwork("configs/60k-004-30i-l2.bin");
+	std::string config = "configs/40i-93.80%.bin";
+
 
 	if (ac > 1)
-		network.runOnImage(av[1]);
+	{
+		if (std::string(av[1]) == "train") {
+			if (ac > 2) {
+				NeuralNetwork	network(av[2]);
+				network.trainOnFile("mnist/mnist_train_images.bin", 
+									"mnist/mnist_train_labels.bin", 
+									config.c_str());
+			} else {
+				NeuralNetwork	network = NeuralNetwork(3, 
+											(int []){784, 128, 10}, 
+											0.001, 
+											0.0001, 
+											0.9, 
+											0.999);
+				network.trainOnFile("mnist/mnist_train_images.bin", 
+									"mnist/mnist_train_labels.bin", 
+									config.c_str());
+			}
+		} else if (std::string(av[1]) == "test") {
+			NeuralNetwork	network = NeuralNetwork(config.c_str());
+			network.testOnFile("mnist/mnist_test_images.bin", "mnist/mnist_test_labels.bin");
+		} else {
+			NeuralNetwork	network = NeuralNetwork(config.c_str());
+			network.runOnImage(av[1]);
+		}
+	}
 	else {
-		network.trainOnFile("mnist/mnist_train_images.bin", "mnist/mnist_train_labels.bin", "configs/60k-004-30i-l2.bin");
-		// std::cerr << "usage: ./NeuralNetwork <image_path>" << std::endl;
+		std::cerr << "usage: ./nn <image_path>" << std::endl;
 	}
 
     return (0);

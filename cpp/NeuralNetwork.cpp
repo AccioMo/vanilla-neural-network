@@ -4,9 +4,8 @@
 # define STB_IMAGE_IMPLEMENTATION
 # include "stb_image.h"
 
-NeuralNetwork::NeuralNetwork( void ) {
-	this->_size = 0;
-}
+NeuralNetwork::NeuralNetwork( void ) : NeuralNetwork(0, (int []){})
+ { }
 
 NeuralNetwork::NeuralNetwork( int size,
 							int *nodes,
@@ -18,15 +17,17 @@ NeuralNetwork::NeuralNetwork( int size,
 	_learning_rate(learning_rate),
 	_l2_lambda(l2_lambda),
 	_beta1(beta1),
-	_beta2(beta2),
-	output_layer(OutputLayer(nodes[size - 2], nodes[size - 1])) {
+	_beta2(beta2) {
+	if (size < 2)
+		return ;
+	this->output_layer = OutputLayer(nodes[size - 2], nodes[size - 1]);
 	this->hidden_layers.reserve(size - 2);
 	for (int i = 0; i < size - 2; i++) {
 		this->hidden_layers.emplace_back(HiddenLayer(i, nodes[i], nodes[i + 1]));
 	}
 }
 
-NeuralNetwork::NeuralNetwork( const char *filename ) {
+NeuralNetwork::NeuralNetwork( const char *filename ) : NeuralNetwork(0, (int []){}) {
 
 	std::streamsize size = get_file_size(filename);
 	std::vector<unsigned char> mnist_train_images = read_binary_file(filename, (size_t)size);
@@ -176,6 +177,7 @@ void	NeuralNetwork::testOnFile( const char *filename, const char *labels ) {
 
 	std::cout << "   --- TESTING ---" << std::endl;
 
+	double	accuracy = 0.0;
 	int	test_iterations = TEST_SIZE / BATCH_SIZE;
 	for (int i = 0; i < test_iterations; i++) {
 		std::cout << "Iteration " << i + 1 << " of " << test_iterations << std::endl;
@@ -184,8 +186,11 @@ void	NeuralNetwork::testOnFile( const char *filename, const char *labels ) {
 		this->feedforward(normalized_inputs);
 		this->backpropagation(normalized_outputs);
 		this->printData(normalized_outputs);
+		accuracy += this->calculateAccuracy(normalized_outputs).mean();
 		std::cout << "   ---	" << std::endl;
 	}
+	accuracy /= test_iterations + 1;
+	std::cout << "TEST ACCURACY\t: " << accuracy * 100 << "%" << std::endl;
 }
 
 Matrix	NeuralNetwork::run( const Matrix input ) {
