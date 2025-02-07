@@ -1,7 +1,7 @@
 CLANG = g++
 FLAGS = -Wall -Wextra -Werror -Wshadow -std=c++11
 DEBUG_FLAGS = -g -fsanitize=address
-OPTIMIZATION_FLAGS = -O3
+OPTIMIZATION_FLAGS = -flto -O3
 HEADERS = Matrix.hpp NetworkLayer.hpp NeuralNetwork.hpp HiddenLayer.hpp OutputLayer.hpp math.hpp utils.hpp config.hpp
 BASE_FILES = NetworkLayer.cpp NeuralNetwork.cpp HiddenLayer.cpp OutputLayer.cpp
 MATH_FILES = math.cpp Matrix.cpp 
