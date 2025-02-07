@@ -59,3 +59,30 @@ std::vector<Matrix>	get_input_labels( const char *filename ) {
     }
 	return (outputs);
 }
+
+std::vector<unsigned char> read_binary_file(const char *filename, size_t size) {
+    std::ifstream file(filename, std::ios::binary);
+    
+    if (file.is_open()) {
+   		std::vector<unsigned char> data(size);
+        file.read(reinterpret_cast<char *>(data.data()), size);
+        file.close();
+	    return data;
+    } else {
+        std::cerr << "Error opening file: " << filename << std::endl;
+    }
+
+	std::vector<unsigned char> none;
+    return none;
+}
+
+std::streamsize get_file_size(const char *filename) {
+    std::ifstream file(filename, std::ios::binary | std::ios::ate);
+    if (file.is_open()) {
+        std::streamsize size = file.tellg();
+        file.close();
+        return size;
+    } else {
+        throw std::runtime_error("Unable to open file");
+    }
+}

@@ -12,7 +12,7 @@ const int TEST_SIZE = 10000;
 /* for SGD (stochastic gradient 
 descent) using sequential data 
 sampling */
-const int BATCH_SIZE = 64;
+const int BATCH_SIZE = 128;
 
 const double INPUT_MIN = 0.0;
 const double INPUT_MAX = 255.0;

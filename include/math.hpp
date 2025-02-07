@@ -17,7 +17,5 @@ Matrix	log( const Matrix &input );
 Matrix	abs( const Matrix &input );
 double	sum( const Matrix &input );
 double	xavier_glorot_init( int fan_in, int fan_out );
-std::vector<unsigned char> read_binary_file(const char *filename, size_t size);
-std::streamsize get_file_size(const char *filename);
 
 #endif
