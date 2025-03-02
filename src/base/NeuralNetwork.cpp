@@ -12,7 +12,7 @@
 # define STB_IMAGE_IMPLEMENTATION
 # include "stb_image.h"
 
-NeuralNetwork::NeuralNetwork( void ) : NeuralNetwork(0, (int []){})
+NeuralNetwork::NeuralNetwork( void ) : _size(0)
  { }
 
 NeuralNetwork::NeuralNetwork( int size,
@@ -35,7 +35,7 @@ NeuralNetwork::NeuralNetwork( int size,
 	}
 }
 
-NeuralNetwork::NeuralNetwork( const char *filename ) : NeuralNetwork(0, (int []){}) {
+NeuralNetwork::NeuralNetwork( const char *filename ) {
 
 	std::streamsize size = get_file_size(filename);
 	std::vector<unsigned char> mnist_train_images = read_binary_file(filename, (size_t)size);

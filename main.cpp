@@ -18,10 +18,11 @@ int main( int ac, char **av )
 									"mnist/mnist_train_labels.bin", 
 									config.c_str());
 			} else {
+				int arch[] = {784, 128, 10};
 				NeuralNetwork	network = NeuralNetwork(3, 
-											(int []){784, 128, 10}, 
-											0.01, 
-											0.001, 
+											arch, 
+											0.1, 
+											0.00001, 
 											0.9, 
 											0.999);
 				network.trainOnFile("mnist/mnist_train_images.bin", 

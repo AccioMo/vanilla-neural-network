@@ -26,7 +26,7 @@ void	NetworkLayer::update( const Matrix &inputs,
 	Matrix	m_hat = this->_m / (1.0 - std::pow(beta1, timestep));
 	Matrix	v_hat = this->_v / (1.0 - std::pow(beta2, timestep));
 
-	this->_weights = this->_weights - (m_hat / v_hat.sqrt() + 1e-8) * learning_rate;
+	this->_weights = this->_weights - (m_hat / (v_hat.sqrt() + 1e-8)) * learning_rate;
 
 	this->_biases = this->_biases - (this->_deltas.sum_columns() * learning_rate);
 }
